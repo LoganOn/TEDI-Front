@@ -3,9 +3,6 @@
     --nav-width: 68px;
 
     /*===== Colors =====*/
-    --first-color: #4723D9;
-    --first-color-light: #AFA5D9;
-    --white-color: #F7F6FB;
 
     /*===== Font and typography =====*/
     --body-font: 'Nunito', sans-serif;
@@ -83,9 +80,45 @@ body{
     overflow: hidden;
 }
 
+.nav__link{
+    position: relative;
+    color: var(--first-color-light);
+    margin-bottom: 1.5rem;
+    transition: .3s;
+}
+
+
+
+.nav__icon{
+    font-size: 1.25rem;
+}
+
+/*Show navbar movil*/
+.show{
+    left: 0;
+}
+
+/*Add padding body movil*/
+.body-pd{
+    padding-left: calc(var(--nav-width) + 1rem);
+}
+
+/*Active links*/
+.active{
+    color: var(--white-color);
+}
+
+.active::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 32px;
+    background-color: var(--white-color);
+}
 .Sidebar{
     height: 100%;
-    width: 10%;
+    width: 100%;
     background-color: #2F4050;
 }
 
@@ -124,4 +157,40 @@ body{
 }
 .SidebarList .row #active{
     background-color: white;
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem);
+    }
+
+    .header {
+        height: calc(var(--header-height) + 1rem);
+        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+    }
+
+    .header__img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header__img img {
+        width: 45px;
+    }
+
+    .l-navbar {
+        left: 0;
+        padding: 1rem 1rem 0 0;
+    }
+
+    /*Show navbar desktop*/
+    .show {
+        width: calc(var(--nav-width) + 156px);
+    }
+
+    /*Add padding body desktop*/
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 188px);
+    }
 }

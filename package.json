@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@iconify-icons/bx": "^1.1.0",
     "@material-ui/icons": "^4.11.2"
   }
 }
