@@ -4,6 +4,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import GroupIcon from '@material-ui/icons/Group';
+
 import "../App.css";
 
 export const SidebarData = [
