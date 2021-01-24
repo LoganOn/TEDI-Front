@@ -1,16 +1,143 @@
 import React, {Component} from "react";
+import axios from "axios";
 import './Login.css';
 import RegisterImage from './img/register.svg'
 import LoginImage from './img/login.svg'
 
+const emailRegex = /\S+@\S+\.\S+/;
+
 class App extends Component {
 
     state = {
-        signUpMode: false
-    }
+        signUpMode: false,
+        email: {
+            fieldName: 'email',
+            value: '',
+           // error: this.props.t('LoginPage.alerts.email'),
+            showError: false,
+            validate: () => this.validateEmail(),
+        },
+        password: {
+            fieldName: 'password',
+            value: '',
+           // error: this.props.t('LoginPage.alerts.password'),
+            showError: false,
+            validate: () => this.validatePassword(),
+        },
+        loginResponse: {
+            fieldName: 'loginResponse',
+            response: null,
+        },
+        avatar: {
+            fieldName: 'avatar',
+            avatarImg: '',
+            avatarUserId: '',
+        },
+        isRememberMe: !!JSON.parse(localStorage.getItem('isRememberMe')),
+        isModalOpen: false
+    };
+
+    refresh = () => {
+        window.location.reload(false);
+    };
+
+    toggleIsModalOpen = () => {
+        const { isModalOpen } = this.state;
+        this.setState({ isModalOpen: !isModalOpen });
+    };
+
+    updateField = (fieldName, value) => {
+        const { state } = this;
+        state[fieldName].value = value;
+        this.setState(state);
+    };
+
+    validatePassword = () => {
+        const { password } = this.state;
+        password.showError = password.value.length < 6;
+        this.setState({ password });
+    };
+
+    validateEmail = () => {
+        const { email } = this.state;
+        email.showError = !emailRegex.test(email.value);
+        this.setState({ email });
+    };
+
+    areAllFieldsCorrect = () => {
+        const { state } = this;
+        const fields = Object.values(state);
+        for (let i = 0; i < fields.length - 1; i += 1) {
+            if (fields[i].showError) return false;
+        }
+        return true;
+    };
+    handleLogin = (e) => {
+        e.preventDefault();
+
+        const { state } = this;
+        Object.values(state)
+            .forEach((field) => {
+                if (field.fieldName != 'loginResponse' && field.fieldName != 'avatar' && field.fieldName) {
+                    field.validate();
+                }
+            });
+
+        if (this.areAllFieldsCorrect()) {
+            delete state.isLoginError;
+            const data = {};
+            Object.keys(state)
+                .forEach((fieldName) => {
+                    data[fieldName] = state[fieldName].value;
+                });
+            axios
+                .post('http://localhost:8080/api/login', data
+                //     {
+                //     "email" : "femax@femax.pl",
+                //     "password" : "#Femax123"
+                // }
+                )
+                .then((response) => {
+                    response.data.imageUrl = '';
+                    this.onLoadedData(response.data);
+
+                    localStorage.setItem('userId', response.data.userId);
+
+                    if (response.data.role == 'Supplier') {
+                       // this.props.history.push('/provider-panel');
+                        console.log("SUPPLIER")
+                    } else if (response.data.role == 'Customer') {
+                        console.log("Customer")
+                    } else  {
+                        console.log("chuj wie");
+                    }
+
+                })
+            console.log(data)
+        }
+    };
+
+    onLoadedData = (data) => {
+        this.props.onLoadedData({
+            firstName: data.name,
+            phone: data.phone,
+            email: data.email,
+            userId: data.userId,
+            imageUrl: data.imageUrl,
+        });
+    };
+
+    onAuth = (data) => {
+        this.props.onAuth({
+            authenticated: true,
+            role: data.role,
+            token: data.token,
+            refreshToken: data.refreshToken,
+        });
+    };
 
 
-        // componentDidMount() {
+// componentDidMount() {
         // fetch('Http://localhost:8080/api/users')
         //     .then(response => response.json())
         //     .then(data =>{
@@ -33,6 +160,7 @@ class App extends Component {
 
 
     render() {
+        const { t } = this.props;
         return (
            <div className={`container ${this.state.signUpMode ? 'sign-up-mode' : null }`}>
                 <div className="forms-container">
@@ -40,14 +168,14 @@ class App extends Component {
                         <form action="#" className="sign-in-form">
                             <h2 className="title">Sign in</h2>
                             <div className="input-field">
-                                <i className="fas fa-user"></i>
-                                <input type="text" placeholder="Email"/>
+                                <i className="fas fa-user" ></i>
+                                <input type="text" placeholder="Email" onChange={(e) => this.updateField('email', e.target.value)}/>
                             </div>
                             <div className="input-field">
-                                <i className="fas fa-lock"></i>
+                                <i className="fas fa-lock" onChange={(e) => this.updateField('password', e.target.value)}></i>
                                 <input type="password" placeholder="Password"/>
                             </div>
-                            <input type="submit" value="Login" className="btn solid"/>
+                            <input type="submit" value="Login" className="btn solid" onClick={this.handleLogin}/>
                         </form>
                         <form action="#" className="sign-up-form">
                             <h2 className="title">Sign up</h2>
