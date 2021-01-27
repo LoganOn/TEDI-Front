@@ -9,7 +9,6 @@ const emailRegex = /\S+@\S+\.\S+/;
 class App extends Component {
 
     state = {
-        signUpMode: false,
         email: {
             fieldName: 'email',
             value: '',
@@ -24,6 +23,25 @@ class App extends Component {
             showError: false,
             validate: () => this.validatePassword(),
         },
+        repassword: {
+            fieldName: 'repassword',
+            value: '',
+            // error: this.props.t('LoginPage.alerts.password'),
+            showError: false,
+            validate: () => this.validatePassword(),
+        },
+        role: {
+            fieldName: 'role',
+            value: '',
+            // error: this.props.t('LoginPage.alerts.password'),
+            showError: false,
+        },
+        company: {
+            fieldName: 'company',
+            value: '',
+            // error: this.props.t('LoginPage.alerts.password'),
+            showError: false,
+        },
         loginResponse: {
             fieldName: 'loginResponse',
             response: null,
@@ -33,8 +51,8 @@ class App extends Component {
             avatarImg: '',
             avatarUserId: '',
         },
-        isRememberMe: !!JSON.parse(localStorage.getItem('isRememberMe')),
-        isModalOpen: false
+        isModalOpen: false,
+        signUpMode: false
     };
 
     refresh = () => {
@@ -90,12 +108,10 @@ class App extends Component {
                 .forEach((fieldName) => {
                     data[fieldName] = state[fieldName].value;
                 });
+            console.log(this.state.email)
+            console.log(this.state.password)
             axios
                 .post('http://localhost:8080/api/login', data
-                //     {
-                //     "email" : "femax@femax.pl",
-                //     "password" : "#Femax123"
-                // }
                 )
                 .then((response) => {
                     response.data.imageUrl = '';
@@ -113,13 +129,56 @@ class App extends Component {
                     }
 
                 })
-            console.log(data)
         }
     };
 
+    handleRegister = (e) => {
+        e.preventDefault();
+
+        const { state } = this;
+        Object.values(state)
+            .forEach((field) => {
+                if (field.fieldName != 'loginResponse' && field.fieldName != 'avatar' && field.fieldName) {
+                    //field.validate();
+                }
+            });
+
+        if (this.areAllFieldsCorrect()) {
+            delete state.isLoginError;
+            const data = {};
+            Object.keys(state)
+                .forEach((fieldName) => {
+                    data[fieldName] = state[fieldName].value;
+                });
+            console.log(this.state.email)
+            console.log(this.state.password)
+            console.log(this.state.repassword)
+            console.log(this.state.company)
+            console.log(this.state.role)
+            axios
+                .post('http://localhost:8080/api/register', data
+                )
+                .then((response) => {
+                    response.data.imageUrl = '';
+                    this.onLoadedData(response.data);
+
+                    localStorage.setItem('userId', response.data.userId);
+
+                    if (response.data.role == 'Supplier') {
+                        // this.props.history.push('/provider-panel');
+                        console.log("SUPPLIER")
+                    } else if (response.data.role == 'Customer') {
+                        console.log("Customer")
+                    } else  {
+                        console.log("chuj wie");
+                    }
+
+                })
+        }
+    };
     onLoadedData = (data) => {
         this.props.onLoadedData({
-            firstName: data.name,
+            //name: data.name,
             phone: data.phone,
             email: data.email,
             userId: data.userId,
@@ -148,7 +207,6 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {signUpMode: false};
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -168,12 +226,12 @@ class App extends Component {
                         <form action="#" className="sign-in-form">
                             <h2 className="title">Sign in</h2>
                             <div className="input-field">
-                                <i className="fas fa-user" ></i>
-                                <input type="text" placeholder="Email" onChange={(e) => this.updateField('email', e.target.value)}/>
+                                <i className="fas fa-user"></i>
+                                <input type="text" onChange={(e) => this.updateField('email', e.target.value)} placeholder="Email" />
                             </div>
                             <div className="input-field">
-                                <i className="fas fa-lock" onChange={(e) => this.updateField('password', e.target.value)}></i>
-                                <input type="password" placeholder="Password"/>
+                                <i className="fas fa-lock"></i>
+                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Password"/>
                             </div>
                             <input type="submit" value="Login" className="btn solid" onClick={this.handleLogin}/>
                         </form>
@@ -181,17 +239,25 @@ class App extends Component {
                             <h2 className="title">Sign up</h2>
                             <div className="input-field">
                                 <i className="fas fa-user"></i>
-                                <input type="text" placeholder="Company"/>
+                                <input type="text" onChange={(e) => this.updateField('role', e.target.value)} placeholder="Role"/>
+                            </div>
+                            <div className="input-field">
+                                <i className="fas fa-user"></i>
+                                <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Company"/>
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-envelope"></i>
-                                <input type="email" placeholder="Email"/>
+                                <input type="email" onChange={(e) => this.updateField('email', e.target.value)} placeholder="Email"/>
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-lock"></i>
-                                <input type="password" placeholder="Password"/>
+                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Password"/>
                             </div>
-                            <input type="submit" className="btn" value="Sign up" />
+                            <div className="input-field">
+                                <i className="fas fa-lock"></i>
+                                <input type="password" onChange={(e) => this.updateField('repassword', e.target.value)} placeholder="Repassword"/>
+                            </div>
+                            <input type="submit" className="btn" value="Sign up" onClick={this.handleRegister}/>
                         </form>
                     </div>
                 </div>
