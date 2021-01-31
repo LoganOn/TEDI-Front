@@ -16,15 +16,8 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import TablePagination from '@material-ui/core/TablePagination';
 import axios from "axios";
+import Row from './Row'
 
-
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
-    },
-});
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.common.black,
@@ -43,109 +36,21 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(date, supplier, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+function createData(creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
     return {
-        date,
-        supplier,
+        creationDate,
+        userId1,
         baseRef,
         numberOrderCustomer,
         docNet,
         docVatSum,
         docTotal,
         history: [
-            { date: '2020-01-05', customerId: '11091700', amount: 3 },
-            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+            { modifyDate: '2020-01-05', userId1: '11091700', itemCode: 'a', itemName: "ItemName1", codeBars: "5900000000000", price: 1000.0, quantity: 3 },
+            { modifyDate: '2020-01-02', userId1: 'Anonymous',itemCode: 'b', itemName: "ItemName1", codeBars: "5900000000001", price: 1000.0, quantity: 1 },
         ],
     };
 }
-
-function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
-
-    return (
-        <React.Fragment>
-            <TableRow className={classes.root}>
-                <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.date}
-                </TableCell>
-                <TableCell align="center">{row.supplier}</TableCell>
-                <TableCell align="center">{row.baseRef}</TableCell>
-                <TableCell align="right">{row.numberOrderCustomer}</TableCell>
-                <TableCell align="right">{row.docNet}</TableCell>
-                <TableCell align="right">{row.docVatSum}</TableCell>
-                <TableCell align="right">{row.docTotal}</TableCell>
-                <TableCell align="right">{row.docTotal}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Szczegóły
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Data modyfikacji</TableCell>
-                                        <TableCell>Nr&nbsp;kat</TableCell>
-                                        <TableCell align="right">Nazwa</TableCell>
-                                        <TableCell align="right">Ilość</TableCell>
-                                        <TableCell align="right">EAN</TableCell>
-                                        <TableCell align="right">Cena netto</TableCell>
-                                        <TableCell align="right">Vat %</TableCell>
-                                        <TableCell align="right">Rabat</TableCell>
-                                        <TableCell align="right">Czas&nbsp;dostawy</TableCell>
-                                        <TableCell align="right">Status</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row">
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
-}
-
-Row.propTypes = {
-    row: PropTypes.shape({
-        supplier: PropTypes.number.isRequired,
-        baseRef: PropTypes.number.isRequired,
-        numberOrderCustomer: PropTypes.number.isRequired,
-        history: PropTypes.arrayOf(
-            PropTypes.shape({
-                amount: PropTypes.number.isRequired,
-                customerId: PropTypes.string.isRequired,
-                date: PropTypes.string.isRequired,
-            }),
-        ).isRequired,
-        date: PropTypes.string.isRequired,
-        docNet: PropTypes.number.isRequired,
-        docVatSum: PropTypes.number.isRequired,
-        docTotal: PropTypes.number.isRequired,
-    }).isRequired,
-};
 
 const rows = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1000),
@@ -182,25 +87,18 @@ class Tab extends Component{
 
     async componentDidMount(){
         this.setState({isLoading: true})
-
         axios
             .get('http://localhost:8080/api/delivery')
             .then((response) => {
-                console.log(response.data.baseRef)
+                // this.setState({data : response.data})
+                console.log(response.data)
+                this.uploadDate(response.data)
             })
     }
-    findAllDeliveryByUser () {
-        // axios({
-        //     method: 'get',
-        //     url: 'http://localhost:8080/api/delivery',
-        //
-        // }
-        //     .then((response) => {
-        //       //  localStorage.setItem('userId', response.data.userId);
-        //         console.log(response.data.baseRef)
-        //     }));
+
+    findAllDeliveryByUser (id) {
         axios
-            .get('http://localhost:8080/api/delivery')
+            .get(`http://localhost:8080/api/details/${id}`)
             .then((response) => {
                 console.log(response.data.baseRef)
             })
@@ -226,7 +124,7 @@ class Tab extends Component{
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
+                            {this.state.delivery && this.state.delivery.map((row) => (
                                 <Row key={row.name} row={row} />
                             ))}
                         </TableBody>
@@ -243,6 +141,15 @@ class Tab extends Component{
                 {/*/>*/}
             </div>
         );
+    }
+    uploadDate(props) {
+        let tempArray = [];
+        props.forEach(data => {
+            let temp = createData(data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            tempArray.push(temp)
+        })
+        this.setState({delivery : tempArray})
+        //this.findAllDeliveryByUser()
     }
 }
 export default Tab
