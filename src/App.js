@@ -3,6 +3,7 @@ import axios from "axios";
 import './Login.css';
 import RegisterImage from './img/register.svg'
 import LoginImage from './img/login.svg'
+import { withTranslation } from 'react-i18next';
 
 const emailRegex = /\S+@\S+\.\S+/;
 
@@ -13,14 +14,14 @@ class App extends Component {
         email: {
             fieldName: 'email',
             value: '',
-           // error: this.props.t('LoginPage.alerts.email'),
+         //   error: this.props.t('LoginPage.alerts.email'),
             showError: false,
             validate: () => this.validateEmail(),
         },
         password: {
             fieldName: 'password',
             value: '',
-           // error: this.props.t('LoginPage.alerts.password'),
+          //  error: this.props.t('LoginPage.alerts.password'),
             showError: false,
             validate: () => this.validatePassword(),
         },
@@ -33,7 +34,6 @@ class App extends Component {
             avatarImg: '',
             avatarUserId: '',
         },
-        isRememberMe: !!JSON.parse(localStorage.getItem('isRememberMe')),
         isModalOpen: false
     };
 
@@ -92,15 +92,9 @@ class App extends Component {
                 });
             axios
                 .post('http://localhost:8080/api/login', data
-                //     {
-                //     "email" : "femax@femax.pl",
-                //     "password" : "#Femax123"
-                // }
                 )
                 .then((response) => {
                     response.data.imageUrl = '';
-                    this.onLoadedData(response.data);
-
                     localStorage.setItem('userId', response.data.userId);
 
                     if (response.data.role == 'Supplier') {
@@ -113,28 +107,17 @@ class App extends Component {
                     }
 
                 })
-            console.log(data)
         }
     };
 
-    onLoadedData = (data) => {
-        this.props.onLoadedData({
-            firstName: data.name,
-            phone: data.phone,
-            email: data.email,
-            userId: data.userId,
-            imageUrl: data.imageUrl,
-        });
-    };
-
-    onAuth = (data) => {
-        this.props.onAuth({
-            authenticated: true,
-            role: data.role,
-            token: data.token,
-            refreshToken: data.refreshToken,
-        });
-    };
+    // onAuth = (data) => {
+    //     this.props.onAuth({
+    //         authenticated: true,
+    //         role: data.role,
+    //         token: data.token,
+    //         refreshToken: data.refreshToken,
+    //     });
+    // };
 
 
 // componentDidMount() {
@@ -148,7 +131,6 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {signUpMode: false};
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -168,12 +150,12 @@ class App extends Component {
                         <form action="#" className="sign-in-form">
                             <h2 className="title">Sign in</h2>
                             <div className="input-field">
-                                <i className="fas fa-user" ></i>
+                                <i className="fas fa-user"></i>
                                 <input type="text" placeholder="Email" onChange={(e) => this.updateField('email', e.target.value)}/>
                             </div>
                             <div className="input-field">
-                                <i className="fas fa-lock" onChange={(e) => this.updateField('password', e.target.value)}></i>
-                                <input type="password" placeholder="Password"/>
+                                <i className="fas fa-lock"></i>
+                                <input type="password" placeholder="Password" onChange={(e) => this.updateField('password', e.target.value)}/>
                             </div>
                             <input type="submit" value="Login" className="btn solid" onClick={this.handleLogin}/>
                         </form>
