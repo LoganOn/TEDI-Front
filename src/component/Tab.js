@@ -36,32 +36,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
-    return {
-        creationDate,
-        userId1,
-        baseRef,
-        numberOrderCustomer,
-        docNet,
-        docVatSum,
-        docTotal,
-        history: [
-            { modifyDate: '2020-01-05', userId1: '11091700', itemCode: 'a', itemName: "ItemName1", codeBars: "5900000000000", price: 1000.0, quantity: 3 },
-            { modifyDate: '2020-01-02', userId1: 'Anonymous',itemCode: 'b', itemName: "ItemName1", codeBars: "5900000000001", price: 1000.0, quantity: 1 },
-        ],
-    };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99, 1000),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-    createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-    createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-    createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-
-
-
 // const classes = makeStyles();
 // const [page, setPage] = React.useState(0);
 // const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -84,30 +58,31 @@ class Tab extends Component{
             isError:false
         }
     }
-
+     createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+        return {
+            deliveryOrderId,
+            creationDate,
+            userId1,
+            baseRef,
+            numberOrderCustomer,
+            docNet,
+            docVatSum,
+            docTotal,
+        };
+    }
     async componentDidMount(){
         this.setState({isLoading: true})
         axios
             .get('http://localhost:8080/api/delivery')
             .then((response) => {
-                // this.setState({data : response.data})
                 console.log(response.data)
                 this.uploadDate(response.data)
             })
     }
 
-    findAllDeliveryByUser (id) {
-        axios
-            .get(`http://localhost:8080/api/details/${id}`)
-            .then((response) => {
-                console.log(response.data.baseRef)
-            })
-}
-
     render() {
         return (
             <div>
-                <button onClick={this.findAllDeliveryByUser}>Add</button>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -145,11 +120,10 @@ class Tab extends Component{
     uploadDate(props) {
         let tempArray = [];
         props.forEach(data => {
-            let temp = createData(data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
             tempArray.push(temp)
         })
         this.setState({delivery : tempArray})
-        //this.findAllDeliveryByUser()
     }
 }
 export default Tab

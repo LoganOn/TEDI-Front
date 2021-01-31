@@ -12,6 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 const useRowStyles = makeStyles({
     root: {
@@ -43,13 +44,27 @@ Row.propTypes = {
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
+    const [details, setDetails] = React.useState( []);
     const classes = useRowStyles();
+    const handleShow = () =>{
+        if(!open){
+            axios
+                .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
+                .then((response) => {
+                    console.log(response.data)
+                    setDetails(response.data)
+                })
+        }
+        setOpen(!open)
+    }
+
 
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                    {/*<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>*/}
+                    <IconButton aria-label="expand row" size="small" onClick={() => handleShow()}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
@@ -77,9 +92,10 @@ function Row(props) {
                                         <TableCell>Data modyfikacji</TableCell>
                                         <TableCell>Nr&nbsp;kat</TableCell>
                                         <TableCell align="right">Nazwa</TableCell>
-                                        <TableCell align="right">Ilość</TableCell>
                                         <TableCell align="right">EAN</TableCell>
                                         <TableCell align="right">Cena netto</TableCell>
+                                        <TableCell align="right">Waluta</TableCell>
+                                        <TableCell align="right">Ilość</TableCell>
                                         <TableCell align="right">Vat %</TableCell>
                                         <TableCell align="right">Rabat</TableCell>
                                         <TableCell align="right">Czas&nbsp;dostawy</TableCell>
@@ -87,16 +103,18 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.history.map((historyRow) => (
+                                    {/*{row.history.map((historyRow) => (*/}
+                                    {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
                                             <TableCell component="th" scope="row">
-                                                {historyRow.date}
+                                                {historyRow.modifyDate}
                                             </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) / 100}
-                                            </TableCell>
+                                            <TableCell align="right">{historyRow.itemCode}</TableCell>
+                                            <TableCell align="right">{historyRow.itemName}</TableCell>
+                                            <TableCell align="right">{historyRow.codeBars}</TableCell>
+                                            <TableCell align="right">{historyRow.price}</TableCell>
+                                            <TableCell align="right">{historyRow.currency}</TableCell>
+                                            <TableCell align="right">{historyRow.quantity}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
