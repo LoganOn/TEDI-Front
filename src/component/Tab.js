@@ -90,7 +90,7 @@ class Tab extends Component{
 
     render() {
         return (
-            <div className={`${this.props.width ? 'offset' : ''}`}>
+            <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
