@@ -5,14 +5,23 @@ import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from './img/src_avatar.svg'
 import Logo1 from './img/favicon1.ico'
+import {useDispatch} from "react-redux";
+import action from "./action/ChangeWidthAction";
+
 function Sidebar() {
 
     const [visible, setVisible] = useState(true);
+    const dispatch = useDispatch();
+
+    const showSidebar = () => {
+        setVisible(prev => !prev)
+        dispatch(action(!visible))
+    }
 
     return(
         <body id="body-pd" className={ `${visible ? 'body-pd' : '' }`}>
         <header className={ `${visible ? 'header body-pd' : "header" }`} id="header">
-            <div className="header__toggle" onClick={() => setVisible(prev => !prev)}>
+            <div className="header__toggle" onClick={() => showSidebar()}>
                 <i className='bx bx-menu' id="header-toggle"> {visible ? <MenuIcon/> : <CloseIcon/> }</i>
             </div>
 

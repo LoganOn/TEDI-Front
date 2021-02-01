@@ -11,34 +11,29 @@ state = {
     email: {
         fieldName: 'email',
         value: '',
-        //   error: this.props.t('LoginPage.alerts.email'),
         showError: false,
         validate: () => this.validateEmail(),
     },
     password: {
         fieldName: 'password',
         value: '',
-        //  error: this.props.t('LoginPage.alerts.password'),
         showError: false,
         validate: () => this.validatePassword(),
     },
     repassword: {
         fieldName: 'repassword',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
         validate: () => this.validatePassword(),
     },
     role: {
         fieldName: 'role',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
     },
     company: {
         fieldName: 'company',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
     },
     loginResponse: {
@@ -113,9 +108,10 @@ handleLogin = (e) => {
             .then((response) => {
                 localStorage.setItem('userId', response.data.userId);
                 if (response.data.role == 'Supplier') {
-                    // this.props.history.push('/provider-panel');
+                     this.props.history.push('/home');
                     console.log("SUPPLIER")
                 } else if (response.data.role == 'Customer') {
+                    this.props.history.push('/home');
                     console.log("Customer")
                 } else  {
                     console.log("chuj wie");

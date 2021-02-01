@@ -4,13 +4,7 @@ import Sidebar from "./component/Sidebar";
 import Tab from "./component/Tab";
 import {BrowserRouter as Router, HashRouter, Route} from "react-router-dom";
 import Users from "./component/Users";
-import styled from 'styled-components'
 
-// const Container = styled.div`
-//   width: 70%;
-//   left: 300px;
-//   height: 70%;
-// `
 
 class App extends Component {
 
@@ -18,12 +12,12 @@ class App extends Component {
         return (
             <div>
             <Router>
-               <Route path='/' component={Sidebar} />
-               {/*<Container>*/}
+                {/*path="/(|main-panel|home|login|register|restore-password|*/}
+                {/*invalid-token|change-password|verify|news|why-is-it-worth|about-project|contact|about-us)/"*/}
+               <Route path='/(home)' component={Sidebar} />
                <Route path='/home' component={Tab} />
-               {/*</Container>*/}
+               <Route path='/login' component={Login}/>
             </Router>
-         {/*//   <Tab />*/}
             </div>
         )
     }

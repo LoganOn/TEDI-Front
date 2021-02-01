@@ -16,7 +16,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import TablePagination from '@material-ui/core/TablePagination';
 import axios from "axios";
+import {connect} from 'react-redux';
 import Row from './Row'
+import '../css/Tab.css'
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -36,18 +38,10 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-// const classes = makeStyles();
+const classes = makeStyles();
 // const [page, setPage] = React.useState(0);
 // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-// const handleChangePage = (event, newPage) => {
-//     setPage(newPage);
-// };
-//
-// const handleChangeRowsPerPage = (event) => {
-//     setRowsPerPage(+event.target.value);
-//     setPage(0);
-// };
 
 class Tab extends Component{
     constructor(props) {
@@ -55,7 +49,10 @@ class Tab extends Component{
         this.state = {
             delivery:[],
             isLoadnig:false,
-            isError:false
+            isError:false,
+            page: 0,
+            rowsPerPage: 10,
+            count:100
         }
     }
      createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
@@ -70,6 +67,16 @@ class Tab extends Component{
             docTotal,
         };
     }
+
+     handleChangePage = (event, newPage) => {
+        this.setState(this.state.page = newPage);
+    };
+
+     handleChangeRowsPerPage = (event) => {
+
+         this.setState(this.state.page = 0, this.state.rowsPerPage = event.target.value);
+    };
+
     async componentDidMount(){
         this.setState({isLoading: true})
         axios
@@ -78,11 +85,12 @@ class Tab extends Component{
                 console.log(response.data)
                 this.uploadDate(response.data)
             })
+        console.log(this.props.width)
     }
 
     render() {
         return (
-            <div>
+            <div className={`${this.props.width ? 'offset' : ''}`}>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -105,15 +113,15 @@ class Tab extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/*<TablePagination*/}
-                {/*    rowsPerPageOptions={[10, 25, 100]}*/}
-                {/*    component="div"*/}
-                {/*    count={rows.length}*/}
-                {/*    rowsPerPage={rowsPerPage}*/}
-                {/*    page={page}*/}
-                {/*    onChangePage={handleChangePage}*/}
-                {/*    onChangeRowsPerPage={handleChangeRowsPerPage}*/}
-                {/*/>*/}
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={this.state.count}
+                    rowsPerPage={this.state.rowsPerPage}
+                    page={this.state.page}
+                    onChangePage={this.handleChangePage}
+                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
             </div>
         );
     }
@@ -126,4 +134,10 @@ class Tab extends Component{
         this.setState({delivery : tempArray})
     }
 }
-export default Tab
+
+const mapStateToProps = (state) => {
+    return {
+        width: state
+    }
+}
+export default connect (mapStateToProps)(Tab)
