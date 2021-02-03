@@ -54,7 +54,9 @@ class Tab extends Component{
             rowsPerPage: 10,
             count:100
         }
+        this.handleClick = this.handleClick.bind(this);
     }
+
      createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
         return {
             deliveryOrderId,
@@ -69,12 +71,14 @@ class Tab extends Component{
     }
 
      handleChangePage = (event, newPage) => {
+        console.log(newPage)
         this.setState(this.state.page = newPage);
     };
 
      handleChangeRowsPerPage = (event) => {
-
+         console.log(this.state.rowsPerPage)
          this.setState(this.state.page = 0, this.state.rowsPerPage = event.target.value);
+         console.log(this.state.rowsPerPage)
     };
 
     async componentDidMount(){
@@ -91,6 +95,9 @@ class Tab extends Component{
     render() {
         return (
             <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
+                <input type='text' placeholder='Firma' name='company'/>
+                <input type='text' placeholder='Numer dostawcy' name='baseRef'/>
+                <input type='text' placeholder='Numer klienta' name='cusNumber'/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
