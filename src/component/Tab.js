@@ -54,14 +54,15 @@ class Tab extends Component{
             rowsPerPage: 10,
             count:100
         }
-        this.handleClick = this.handleClick.bind(this);
+     //  this.handleClick = this.handleClick.bind(this);
     }
 
-     createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+     createData(deliveryOrderId, creationDate, supplier, customer, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
         return {
             deliveryOrderId,
             creationDate,
-            userId1,
+            supplier,
+            customer,
             baseRef,
             numberOrderCustomer,
             docNet,
@@ -84,12 +85,10 @@ class Tab extends Component{
     async componentDidMount(){
         this.setState({isLoading: true})
         axios
-            .get('http://localhost:8080/api/delivery')
+            .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
             .then((response) => {
-                console.log(response.data)
                 this.uploadDate(response.data)
             })
-        console.log(this.props.width)
     }
 
     render() {
@@ -104,10 +103,9 @@ class Tab extends Component{
                             <TableRow>
                                 <StyledTableCell />
                                 <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell>Dostawca</StyledTableCell>
+                                <StyledTableCell>{localStorage.getItem("role") == "customer" ? 'Dostawca' : 'Klient' }</StyledTableCell>
                                 <StyledTableCell align="center">Numer&nbsp;zamówienia</StyledTableCell>
                                 <StyledTableCell align="right">Numer&nbsp;klienta</StyledTableCell>
-                                <StyledTableCell align="right">Klient</StyledTableCell>
                                 <StyledTableCell align="right">Wartość&nbsp;netto</StyledTableCell>
                                 <StyledTableCell align="right">Vat</StyledTableCell>
                                 <StyledTableCell align="right">Wartość&nbsp;brutto</StyledTableCell>
@@ -135,7 +133,7 @@ class Tab extends Component{
     uploadDate(props) {
         let tempArray = [];
         props.forEach(data => {
-            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
             tempArray.push(temp)
         })
         this.setState({delivery : tempArray})

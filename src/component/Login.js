@@ -107,6 +107,7 @@ handleLogin = (e) => {
             )
             .then((response) => {
                 localStorage.setItem('userId', response.data.userId);
+                localStorage.setItem('role', response.data.role);
                 if (response.data.role == 'Supplier') {
                      this.props.history.push('/home');
                     console.log("SUPPLIER")
