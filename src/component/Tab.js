@@ -52,9 +52,11 @@ class Tab extends Component{
             isError:false,
             page: 0,
             rowsPerPage: 10,
-            count:100
+            count:100,
+            company:'',
+            baseNum: '',
+            cusNum: ''
         }
-        this.handleClick = this.handleClick.bind(this);
     }
 
      createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
@@ -92,12 +94,18 @@ class Tab extends Component{
         console.log(this.props.width)
     }
 
+    // updateField = (fieldName, value) => {
+    //     const { state } = this;
+    //     state[fieldName].value = value;
+    //     this.setState(state);
+    // };
+
     render() {
         return (
             <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
-                <input type='text' placeholder='Firma' name='company'/>
-                <input type='text' placeholder='Numer dostawcy' name='baseRef'/>
-                <input type='text' placeholder='Numer klienta' name='cusNumber'/>
+                <input type='text' placeholder='Firma' name='company' onChange={this.state.company}/>
+                <input type='text' placeholder='Numer dostawcy' name='baseRef' onChange={this.state.baseNum}/>
+                <input type='text' placeholder='Numer klienta' name='cusNumber' onChange={this.state.cusNum}/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>

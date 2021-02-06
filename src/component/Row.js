@@ -74,7 +74,7 @@ function Row(props) {
                 <TableCell align="right">{row.numberOrderCustomer}</TableCell>
                 <TableCell align="right">{row.docNet}</TableCell>
                 <TableCell align="right">{row.docVatSum}</TableCell>
-                <TableCell align="right">{row.docTotal}</TableCell>
+                <TableCell align="right">{row.docVatSum}</TableCell>
                 <TableCell align="right">{row.docTotal}</TableCell>
             </TableRow>
             <TableRow>
