@@ -209,10 +209,14 @@ render() {
                     </form>
                     <form action="#" className="sign-up-form">
                         <h2 className="title">Sign up</h2>
-                        <div className="input-field">
+                        {/*<div className="">*/}
                             <i className="fas fa-user"></i>
-                            <input type="text" onChange={(e) => this.updateField('role', e.target.value)} placeholder="Role"/>
-                        </div>
+                            <select defaultValue="select" className="input-field" onChange={(e) => this.updateField('company', e.target.value)}>
+                                <option  hidden value="select" disabled>Rola</option>
+                                <option  data-id="supplier">supplier</option>
+                                <option  data-id="customer">customer</option>
+                            </select>
+                        {/*</div>*/}
                         <div className="input-field">
                             <i className="fas fa-user"></i>
                             <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Company"/>
