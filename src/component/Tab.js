@@ -59,11 +59,12 @@ class Tab extends Component{
         }
     }
 
-     createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+    createData(deliveryOrderId, creationDate, supplier, customer, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
         return {
             deliveryOrderId,
             creationDate,
-            userId1,
+            supplier,
+            customer,
             baseRef,
             numberOrderCustomer,
             docNet,
@@ -78,41 +79,56 @@ class Tab extends Component{
     };
 
      handleChangeRowsPerPage = (event) => {
-         console.log(this.state.rowsPerPage)
          this.setState(this.state.page = 0, this.state.rowsPerPage = event.target.value);
-         console.log(this.state.rowsPerPage)
     };
 
     async componentDidMount(){
         this.setState({isLoading: true})
+        console.log("jestem")
         axios
-            .get('http://localhost:8080/api/delivery')
+            .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${this.state.company}&baseRef=${this.state.baseNum}&cusNumber=${this.state.cusNum}`)
             .then((response) => {
                 console.log(response.data)
                 this.uploadDate(response.data)
             })
-        console.log(this.props.width)
+        // axios
+        //     .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
+        //     .then((response) => {
+        //         console.log(response.data)
+        //         this.uploadDate(response.data)
+        //     })
+        // console.log(this.props.width)
     }
 
-    // updateField = (fieldName, value) => {
-    //     const { state } = this;
-    //     state[fieldName].value = value;
-    //     this.setState(state);
-    // };
+    // async componentDidUpdate() {
+    //     this.setState({isLoading: true})
+    //     axios
+    //         .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${this.state.company}&baseRef=${this.state.baseNum}&cusNumber=${this.state.cusNum}`)
+    //         .then((response) => {
+    //             console.log(response.data)
+    //             this.uploadDate(response.data)
+    //         })
+    // }
+
+    updateField = (fieldName, value) => {
+        const { state } = this;
+        state[fieldName] = value;
+        this.setState(state);
+    };
 
     render() {
         return (
             <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
-                <input type='text' placeholder='Firma' name='company' onChange={this.state.company}/>
-                <input type='text' placeholder='Numer dostawcy' name='baseRef' onChange={this.state.baseNum}/>
-                <input type='text' placeholder='Numer klienta' name='cusNumber' onChange={this.state.cusNum}/>
+                <input type='text' placeholder='Firma' name='company' onChange={(e) => this.updateField('company', e.target.value)}/>
+                <input type='text' placeholder='Numer dostawcy' name='baseRef' onChange={(e) => this.updateField('baseNum', e.target.value)}/>
+                <input type='text' placeholder='Numer klienta' name='cusNumber' onChange={(e) => this.updateField('cusNum', e.target.value)}/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell />
                                 <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell>Dostawca</StyledTableCell>
+                                <StyledTableCell>{localStorage.getItem("role") == "customer" ? 'Dostawca' : 'Klient' }</StyledTableCell>
                                 <StyledTableCell align="center">Numer&nbsp;zamówienia</StyledTableCell>
                                 <StyledTableCell align="right">Numer&nbsp;klienta</StyledTableCell>
                                 <StyledTableCell align="right">Klient</StyledTableCell>
@@ -143,7 +159,7 @@ class Tab extends Component{
     uploadDate(props) {
         let tempArray = [];
         props.forEach(data => {
-            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
             tempArray.push(temp)
         })
         this.setState({delivery : tempArray})

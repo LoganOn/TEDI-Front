@@ -94,7 +94,6 @@ handleLogin = (e) => {
                 //field.validate();
             }
         });
-
     if (this.areAllFieldsCorrect()) {
         delete state.isLoginError;
         const data = {};
@@ -107,18 +106,18 @@ handleLogin = (e) => {
             )
             .then((response) => {
                 localStorage.setItem('userId', response.data.userId);
-                if (response.data.role == 'Supplier') {
+                localStorage.setItem('role', response.data.role);
+                if (response.data.role == 'supplier') {
                      this.props.history.push('/home');
-                    console.log("SUPPLIER")
-                } else if (response.data.role == 'Customer') {
+                    console.log("supplier")
+                } else if (response.data.role == 'customer') {
                     this.props.history.push('/home');
-                    console.log("Customer")
+                    console.log("customer")
                 } else  {
                     console.log("chuj wie");
                 }
             })
     }
-
 };
 
 // onAuth = (data) => {
@@ -156,7 +155,6 @@ handleRegister = (e) => {
                 if (response.status == 200) {
                     this.handleClick()
                 }
-
             })
     }
 };
@@ -178,16 +176,6 @@ handleRegister = (e) => {
 //         refreshToken: data.refreshToken,
 //     });
 // };
-
-
-// componentDidMount() {
-// fetch('Http://localhost:8080/api/users')
-//     .then(response => response.json())
-//     .then(data =>{
-//         console.log(data);
-//         this.setState({data})
-//     })
-// }
 
 constructor(props) {
     super(props);
