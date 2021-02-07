@@ -58,12 +58,10 @@ function Row(props) {
         setOpen(!open)
     }
 
-
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
-                    {/*<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>*/}
                     <IconButton aria-label="expand row" size="small" onClick={() => handleShow()}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
@@ -71,12 +69,12 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.creationDate}
                 </TableCell>
-                <TableCell align="center">{row.userId1}</TableCell>
+                <TableCell align="center">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
                 <TableCell align="center">{row.baseRef}</TableCell>
                 <TableCell align="right">{row.numberOrderCustomer}</TableCell>
                 <TableCell align="right">{row.docNet}</TableCell>
                 <TableCell align="right">{row.docVatSum}</TableCell>
-                <TableCell align="right">{row.docTotal}</TableCell>
+                <TableCell align="right">{row.docVatSum}</TableCell>
                 <TableCell align="right">{row.docTotal}</TableCell>
             </TableRow>
             <TableRow>
@@ -103,7 +101,6 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {/*{row.history.map((historyRow) => (*/}
                                     {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
                                             <TableCell component="th" scope="row">
@@ -126,5 +123,4 @@ function Row(props) {
         </React.Fragment>
     );
 }
-
 export default Row

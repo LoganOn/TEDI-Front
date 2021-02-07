@@ -1,0 +1,7 @@
+.offset{
+    padding-left: 20px ;
+    margin-left: calc(198px + 1rem);
+}
+.withoutOffset{
+    margin-left:calc(68px + 1rem);
+}

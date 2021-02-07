@@ -11,34 +11,29 @@ state = {
     email: {
         fieldName: 'email',
         value: '',
-        //   error: this.props.t('LoginPage.alerts.email'),
         showError: false,
         validate: () => this.validateEmail(),
     },
     password: {
         fieldName: 'password',
         value: '',
-        //  error: this.props.t('LoginPage.alerts.password'),
         showError: false,
         validate: () => this.validatePassword(),
     },
     repassword: {
         fieldName: 'repassword',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
         validate: () => this.validatePassword(),
     },
     role: {
         fieldName: 'role',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
     },
     company: {
         fieldName: 'company',
         value: '',
-        // error: this.props.t('LoginPage.alerts.password'),
         showError: false,
     },
     loginResponse: {
@@ -99,7 +94,6 @@ handleLogin = (e) => {
                 //field.validate();
             }
         });
-
     if (this.areAllFieldsCorrect()) {
         delete state.isLoginError;
         const data = {};
@@ -112,17 +106,18 @@ handleLogin = (e) => {
             )
             .then((response) => {
                 localStorage.setItem('userId', response.data.userId);
-                if (response.data.role == 'Supplier') {
-                    // this.props.history.push('/provider-panel');
-                    console.log("SUPPLIER")
-                } else if (response.data.role == 'Customer') {
-                    console.log("Customer")
+                localStorage.setItem('role', response.data.role);
+                if (response.data.role == 'supplier') {
+                     this.props.history.push('/home');
+                    console.log("supplier")
+                } else if (response.data.role == 'customer') {
+                    this.props.history.push('/home');
+                    console.log("customer")
                 } else  {
                     console.log("chuj wie");
                 }
             })
     }
-
 };
 
 // onAuth = (data) => {
@@ -160,7 +155,6 @@ handleRegister = (e) => {
                 if (response.status == 200) {
                     this.handleClick()
                 }
-
             })
     }
 };
@@ -182,16 +176,6 @@ handleRegister = (e) => {
 //         refreshToken: data.refreshToken,
 //     });
 // };
-
-
-// componentDidMount() {
-// fetch('Http://localhost:8080/api/users')
-//     .then(response => response.json())
-//     .then(data =>{
-//         console.log(data);
-//         this.setState({data})
-//     })
-// }
 
 constructor(props) {
     super(props);
@@ -225,10 +209,14 @@ render() {
                     </form>
                     <form action="#" className="sign-up-form">
                         <h2 className="title">Sign up</h2>
-                        <div className="input-field">
+                        {/*<div className="">*/}
                             <i className="fas fa-user"></i>
-                            <input type="text" onChange={(e) => this.updateField('role', e.target.value)} placeholder="Role"/>
-                        </div>
+                            <select defaultValue="select" className="input-field" onChange={(e) => this.updateField('company', e.target.value)}>
+                                <option  hidden value="select" disabled>Rola</option>
+                                <option  data-id="supplier">supplier</option>
+                                <option  data-id="customer">customer</option>
+                            </select>
+                        {/*</div>*/}
                         <div className="input-field">
                             <i className="fas fa-user"></i>
                             <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Company"/>

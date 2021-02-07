@@ -1,22 +1,17 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import TablePagination from '@material-ui/core/TablePagination';
 import axios from "axios";
+import {connect} from 'react-redux';
 import Row from './Row'
+import '../css/Tab.css'
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -36,18 +31,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-// const classes = makeStyles();
-// const [page, setPage] = React.useState(0);
-// const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-// const handleChangePage = (event, newPage) => {
-//     setPage(newPage);
-// };
-//
-// const handleChangeRowsPerPage = (event) => {
-//     setRowsPerPage(+event.target.value);
-//     setPage(0);
-// };
+const classes = makeStyles();
 
 class Tab extends Component{
     constructor(props) {
@@ -55,14 +39,22 @@ class Tab extends Component{
         this.state = {
             delivery:[],
             isLoadnig:false,
-            isError:false
+            isError:false,
+            page: 0,
+            rowsPerPage: 10,
+            count:100,
+            company:'',
+            baseNum: '',
+            cusNum: ''
         }
     }
-     createData(deliveryOrderId, creationDate, userId1, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+
+    createData(deliveryOrderId, creationDate, supplier, customer, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
         return {
             deliveryOrderId,
             creationDate,
-            userId1,
+            supplier,
+            customer,
             baseRef,
             numberOrderCustomer,
             docNet,
@@ -70,26 +62,61 @@ class Tab extends Component{
             docTotal,
         };
     }
+
+     handleChangePage = (event, newPage) => {
+        this.setState({page: newPage});
+    };
+
+     handleChangeRowsPerPage = (event) => {
+         this.setState({rowsPerPage : parseInt(event.target.value, 10), page: 0});
+    };
+
     async componentDidMount(){
         this.setState({isLoading: true})
         axios
-            .get('http://localhost:8080/api/delivery')
+            .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${this.state.company}&baseRef=${this.state.baseNum}&cusNumber=${this.state.cusNum}`)
             .then((response) => {
                 console.log(response.data)
                 this.uploadDate(response.data)
             })
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        const {company, baseNum, cusNum, rowsPerPage, page} = this.state
+        if (company !== prevState.company || baseNum !== prevState.baseNum || cusNum !== prevState.cusNum || rowsPerPage !== prevState.rowsPerPage || page !== prevState.page){
+            axios
+                .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${company}&baseRef=${baseNum}&cusNumber=${cusNum}&size=${rowsPerPage}&page=${page}`)
+                .then((response) => {
+                    console.log(response)
+                    if(response.status == 204)
+                    {
+                        this.uploadDate([])
+                    }
+                    else
+                        this.uploadDate(response.data)
+                })
+        }
+    }
+
+    updateField = (fieldName, value) => {
+        const { state } = this;
+        state[fieldName] = value;
+        this.setState(state);
+    };
+
     render() {
         return (
-            <div>
+            <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
+                <input type='text' placeholder='Firma' name='company' onChange={(e) => this.setState({company : e.target.value})}/>
+                <input type='text' placeholder='Numer dostawcy' name='baseRef' onChange={(e) => this.setState({baseNum : e.target.value})}/>
+                <input type='text' placeholder='Numer klienta' name='cusNumber' onChange={(e) => this.setState({cusNum : e.target.value})}/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell />
                                 <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell>Dostawca</StyledTableCell>
+                                <StyledTableCell>{localStorage.getItem("role") == "customer" ? 'Dostawca' : 'Klient' }</StyledTableCell>
                                 <StyledTableCell align="center">Numer&nbsp;zamówienia</StyledTableCell>
                                 <StyledTableCell align="right">Numer&nbsp;klienta</StyledTableCell>
                                 <StyledTableCell align="right">Klient</StyledTableCell>
@@ -105,25 +132,31 @@ class Tab extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/*<TablePagination*/}
-                {/*    rowsPerPageOptions={[10, 25, 100]}*/}
-                {/*    component="div"*/}
-                {/*    count={rows.length}*/}
-                {/*    rowsPerPage={rowsPerPage}*/}
-                {/*    page={page}*/}
-                {/*    onChangePage={handleChangePage}*/}
-                {/*    onChangeRowsPerPage={handleChangeRowsPerPage}*/}
-                {/*/>*/}
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, 100]}
+                    component="div"
+                    count={this.state.count}
+                    rowsPerPage={this.state.rowsPerPage}
+                    page={this.state.page}
+                    onPageChange={this.handleChangePage}
+                    onRowsPerPageChange={this.handleChangeRowsPerPage}
+                    />
             </div>
         );
     }
     uploadDate(props) {
         let tempArray = [];
         props.forEach(data => {
-            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.userId1, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
             tempArray.push(temp)
         })
         this.setState({delivery : tempArray})
     }
 }
-export default Tab
+
+const mapStateToProps = (state) => {
+    return {
+        width: state
+    }
+}
+export default connect (mapStateToProps)(Tab)
