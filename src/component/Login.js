@@ -3,8 +3,33 @@ import '../css/Login.css';
 import RegisterImage from '../img/register.svg'
 import LoginImage from '../img/login.svg'
 import React, {Component} from "react";
+import Select from "react-select";
+
 
 const emailRegex = /\S+@\S+\.\S+/;
+
+
+
+const shapeStyles = {
+    control: styles => ({ ...styles, backgroundColor: '#f0f0f0', borderRadius: '55px', minWidth: '380px', width: '100%', margin: '10px 0', height: '55px',display: 'flex', fontFamily: "Poppins" }),
+    option: (styles, { data, isDisabled, isFocused, isSelected  }) => {
+        return {
+            ...styles,
+            backgroundColor: isDisabled ? 'red' : "#f0f0f0",
+            marginTop: 0,
+            color: 'black',
+            cursor: isDisabled ? 'not-allowed' : 'default',
+            maxWidth: '380px',
+            width: '100%',
+        };
+    },
+
+};
+
+const options = [
+    { value: 'customer', label: 'Customer' },
+    { value: 'supplier', label: 'Supplier' }
+];
 
 class Login extends Component{
 state = {
@@ -46,7 +71,8 @@ state = {
         avatarUserId: '',
     },
     isModalOpen: false,
-    signUpMode: false
+    signUpMode: false,
+    selectedOption:''
 };
 
 refresh = () => {
@@ -188,6 +214,11 @@ handleClick() {
     }));
 }
 
+handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+}
+
 
 render() {
     const { t } = this.props;
@@ -195,6 +226,7 @@ render() {
         <div className={`container ${this.state.signUpMode ? 'sign-up-mode' : null }`}>
             <div className="forms-container">
                 <div className="signin-signup">
+
                     <form action="#" className="sign-in-form">
                         <h2 className="title">Sign in</h2>
                         <div className="input-field">
@@ -209,14 +241,19 @@ render() {
                     </form>
                     <form action="#" className="sign-up-form">
                         <h2 className="title">Sign up</h2>
-                        {/*<div className="">*/}
                             <i className="fas fa-user"></i>
-                            <select defaultValue="select" className="input-field" onChange={(e) => this.updateField('company', e.target.value)}>
-                                <option  hidden value="select" disabled>Rola</option>
-                                <option  data-id="supplier">supplier</option>
-                                <option  data-id="customer">customer</option>
-                            </select>
-                        {/*</div>*/}
+                            {/*<select defaultValue="select" className="input-field" onChange={(e) => this.updateField('company', e.target.value)}>*/}
+                            {/*    <option  hidden value="select" disabled>Rola</option>*/}
+                            {/*    <option  data-id="supplier">supplier</option>*/}
+                            {/*    <option  data-id="customer">customer</option>*/}
+                            {/*    <></>*/}
+                            {/*</select>*/}
+                        <Select
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            options={options}
+                            styles={shapeStyles}
+                        />
                         <div className="input-field">
                             <i className="fas fa-user"></i>
                             <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Company"/>

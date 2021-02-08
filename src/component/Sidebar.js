@@ -24,7 +24,6 @@ function Sidebar() {
             <div className="header__toggle" onClick={() => showSidebar()}>
                 <i className='bx bx-menu' id="header-toggle"> {visible ? <MenuIcon/> : <CloseIcon/> }</i>
             </div>
-
             <div className="header__img">
                 <img src={Avatar} alt=""/>
             </div>
@@ -45,7 +44,7 @@ function Sidebar() {
                                     <div id = "nav__name">{val.title}</div>
                                 </a>
                             )
-                        })}}
+                        })}
                     </div>
                 </div>
             </nav>

@@ -1,0 +1,12 @@
+.offset1{
+    padding-left: 20px ;
+    margin-left: 43rem;
+    width: 600px;
+}
+.withoutOffset1{
+    margin-left:calc(68px + 1rem);
+}
+
+.mainDiv{
+    width: 100px;
+}

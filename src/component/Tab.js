@@ -45,7 +45,8 @@ class Tab extends Component{
             count:100,
             company:'',
             baseNum: '',
-            cusNum: ''
+            cusNum: '',
+            cancelToken: undefined
         }
     }
 
@@ -84,8 +85,12 @@ class Tab extends Component{
     componentDidUpdate(prevProps, prevState) {
         const {company, baseNum, cusNum, rowsPerPage, page} = this.state
         if (company !== prevState.company || baseNum !== prevState.baseNum || cusNum !== prevState.cusNum || rowsPerPage !== prevState.rowsPerPage || page !== prevState.page){
+            if (typeof this.state.cancelToken != typeof undefined) {
+                this.state.cancelToken.cancel("Operation canceled due to new request.");
+            }
+            this.state.cancelToken = axios.CancelToken.source();
             axios
-                .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${company}&baseRef=${baseNum}&cusNumber=${cusNum}&size=${rowsPerPage}&page=${page}`)
+                .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${company}&baseRef=${baseNum}&cusNumber=${cusNum}&size=${rowsPerPage}&page=${page}`, { cancelToken: this.state.cancelToken.token })
                 .then((response) => {
                     console.log(response)
                     if(response.status == 204)
@@ -117,9 +122,8 @@ class Tab extends Component{
                                 <StyledTableCell />
                                 <StyledTableCell>Data</StyledTableCell>
                                 <StyledTableCell>{localStorage.getItem("role") == "customer" ? 'Dostawca' : 'Klient' }</StyledTableCell>
-                                <StyledTableCell align="center">Numer&nbsp;zamówienia</StyledTableCell>
-                                <StyledTableCell align="right">Numer&nbsp;klienta</StyledTableCell>
-                                <StyledTableCell align="right">Klient</StyledTableCell>
+                                <StyledTableCell align="left">Numer&nbsp;zamówienia</StyledTableCell>
+                                <StyledTableCell align="left">Numer&nbsp;klienta</StyledTableCell>
                                 <StyledTableCell align="right">Wartość&nbsp;netto</StyledTableCell>
                                 <StyledTableCell align="right">Vat</StyledTableCell>
                                 <StyledTableCell align="right">Wartość&nbsp;brutto</StyledTableCell>
