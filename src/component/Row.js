@@ -13,6 +13,7 @@ import TableBody from "@material-ui/core/TableBody";
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
+import Moment from 'moment';
 
 const useRowStyles = makeStyles({
     root: {
@@ -67,13 +68,12 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.creationDate}
+                    {Moment(row.creationDate).format('DD-MM-YYYY hh:mm:ss')}
                 </TableCell>
-                <TableCell align="center">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
-                <TableCell align="center">{row.baseRef}</TableCell>
-                <TableCell align="right">{row.numberOrderCustomer}</TableCell>
+                <TableCell align="left">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
+                <TableCell align="left">{row.baseRef}</TableCell>
+                <TableCell align="left">{row.numberOrderCustomer}</TableCell>
                 <TableCell align="right">{row.docNet}</TableCell>
-                <TableCell align="right">{row.docVatSum}</TableCell>
                 <TableCell align="right">{row.docVatSum}</TableCell>
                 <TableCell align="right">{row.docTotal}</TableCell>
             </TableRow>
@@ -104,7 +104,7 @@ function Row(props) {
                                     {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
                                             <TableCell component="th" scope="row">
-                                                {historyRow.modifyDate}
+                                                {Moment(historyRow.modifyDate).format('DD-MM-YYYY hh:mm:ss')}
                                             </TableCell>
                                             <TableCell align="right">{historyRow.itemCode}</TableCell>
                                             <TableCell align="right">{historyRow.itemName}</TableCell>
