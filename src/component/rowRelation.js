@@ -9,6 +9,7 @@ import {FormControlLabel, Switch} from "@material-ui/core";
 import '../css/Relation.css'
 import Moment from "moment";
 
+
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
@@ -45,6 +46,7 @@ function RowRelation(props) {
     const [details, setDetails] = React.useState( []);
     const [text, setText] = React.useState(props.text);
     const classes = useRowStyles();
+
     const deleteRelation = () =>{
             axios
                 .delete(`http://localhost:8080/api/relations/${row.relationUsersId}`)
