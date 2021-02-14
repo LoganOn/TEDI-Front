@@ -9,9 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import axios from "axios";
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Row from './rowRelation'
-import '../css/Relation.css'
+import '../css/Tab.css'
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -47,6 +47,7 @@ const Relation = (props) => {
     const [baseNum, setBaseNum] = useState('');
     const [cusNum, setCusNum] = useState('');
     const [text, setText] = useState(false);
+    const width = useSelector((state => state))
 
 
     const createData = (relationUsersId, creationDate, supplier, customer, active) => {
@@ -86,6 +87,10 @@ const Relation = (props) => {
             })
     }, [])
 
+    React.useEffect(() => {
+     console.log(width)
+    }, [width])
+
     // React.useEffect(() => {
     //     axios
     //         //.get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${company}&baseRef=${baseNum}&cusNumber=${cusNum}&size=${rowsPerPage}&page=${page}`)
@@ -122,7 +127,7 @@ const Relation = (props) => {
     //     this.setState(state);
     // };
         return (
-            <div className={`${props.width ? 'offset1' : 'withoutOffset1'}`}>
+            <div className={`${width ? 'offset' : 'withoutOffset'}`}>
                 <input type='text' placeholder='Firma' name='company' onChange={(e) => setCompany(e.target.valu)}/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
