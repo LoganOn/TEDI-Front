@@ -26,7 +26,7 @@ const EditDetails = (props) => {
         // console.log(name)
         // console.log(barCode)
         // console.log(valueNet)
-    }, [name, barCode, valueNet])
+    }, [props.name])
     return (
         <Modal
             animationDuration={50}

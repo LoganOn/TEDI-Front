@@ -1,61 +1,61 @@
-//Colors
-$warning: #CB621C;
-$link: #169BD5;
-$linkHover: #1060C1;
-$bgSite: #f4f8f8;
-$greyBt: #5F5F5F;
-$greenBt: #38724f;
-$greenBtHover: #295339;
-$redBt: #e03d4d;
-$redBtHover: #cb1c2e;
-$blueBt: #60b1b7;
-$blueBtHover: #399a9f;
-$accent: #9fdec3;
-$rowTableHover: rgba(38, 193, 109, 0.2);
-$borderTable: #888888;
-$fontDark: #333;
-$fontLight: #ffffff;
-$fontTitle: #228569;
-$fontDarkGreen: #248469;
-//Font
-$fontStandard: 500;
-$fontBold: 700;
-$fontFamily: Lato, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-$bgInput: #b0e2cd;
-
-
-.confirmatory--modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0.5em;
-div{
-button {
-    margin: 0 1em;
-    min-width: 100px;
-    border-radius: 0.75em;
-    color: $fontLight;
-    font-size: 1em;
-    padding: 0.5em;
-    cursor: pointer;
-    border: none;
-    outline: none;
-
-}
-.confirmation__Yes {
-    background-color: $greenBt;
-&:hover{
-     background-color: $greenBtHover;
- }
-
-}
-.confirmation__No {
-    background-color: $redBt;
-&:hover{
-     background-color: $redBtHover;
- }
-
-}
-}
-}
+////Colors
+//$warning: #CB621C;
+//$link: #169BD5;
+//$linkHover: #1060C1;
+//$bgSite: #f4f8f8;
+//$greyBt: #5F5F5F;
+//$greenBt: #38724f;
+//$greenBtHover: #295339;
+//$redBt: #e03d4d;
+//$redBtHover: #cb1c2e;
+//$blueBt: #60b1b7;
+//$blueBtHover: #399a9f;
+//$accent: #9fdec3;
+//$rowTableHover: rgba(38, 193, 109, 0.2);
+//$borderTable: #888888;
+//$fontDark: #333;
+//$fontLight: #ffffff;
+//$fontTitle: #228569;
+//$fontDarkGreen: #248469;
+////Font
+//$fontStandard: 500;
+//$fontBold: 700;
+//$fontFamily: Lato, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//$bgInput: #b0e2cd;
+//
+//
+//.confirmatory--modal {
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: center;
+//    align-items: center;
+//    margin-top: 0.5em;
+//div{
+//button {
+//    margin: 0 1em;
+//    min-width: 100px;
+//    border-radius: 0.75em;
+//    color: $fontLight;
+//    font-size: 1em;
+//    padding: 0.5em;
+//    cursor: pointer;
+//    border: none;
+//    outline: none;
+//
+//}
+//.confirmation__Yes {
+//    background-color: $greenBt;
+//&:hover{
+//     background-color: $greenBtHover;
+// }
+//
+//}
+//.confirmation__No {
+//    background-color: $redBt;
+//&:hover{
+//     background-color: $redBtHover;
+// }
+//
+//}
+//}
+//}
