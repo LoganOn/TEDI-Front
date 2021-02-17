@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,6 +14,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Moment from 'moment';
+import EditDetails from "./EditDetails";
 
 const useRowStyles = makeStyles({
     root: {
@@ -43,34 +44,51 @@ Row.propTypes = {
 };
 
 function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const [details, setDetails] = React.useState( []);
+    const {row} = props;
+    const [open, setOpen] = useState(false);
+    const [details, setDetails] = useState([]);
     const classes = useRowStyles();
-    const handleShow = () =>{
-        if(!open){
+    const [name, setName] = useState()
+    const [barCode, setBarCode] = useState()
+    const [valueNet, setValueNet] = useState()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleShow = () => {
+        if (!open) {
             axios
                 .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
                 .then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     setDetails(response.data)
                 })
         }
         setOpen(!open)
     }
 
+    //TODO do poprawy valuenet
+    const edit = (detail) =>{
+        setName(detail.itemName);
+        setBarCode(detail.codeBars);
+        setValueNet(detail.price);
+        setIsModalOpen(true);
+        console.log(detail.itemName)
+    }
+
+    const closeModel = () => {
+        setIsModalOpen(false)
+    }
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => handleShow()}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
                     {Moment(row.creationDate).format('DD-MM-YYYY hh:mm:ss')}
                 </TableCell>
-                <TableCell align="left">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
+                <TableCell
+                    align="left">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
                 <TableCell align="left">{row.baseRef}</TableCell>
                 <TableCell align="left">{row.numberOrderCustomer}</TableCell>
                 <TableCell align="right">{row.docNet}</TableCell>
@@ -78,7 +96,7 @@ function Row(props) {
                 <TableCell align="right">{row.docTotal}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={9}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
@@ -87,7 +105,7 @@ function Row(props) {
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Data modyfikacji</TableCell>
+                                        <TableCell align="left">Powiadomienie</TableCell>
                                         <TableCell>Nr&nbsp;kat</TableCell>
                                         <TableCell align="right">Nazwa</TableCell>
                                         <TableCell align="right">EAN</TableCell>
@@ -98,20 +116,23 @@ function Row(props) {
                                         <TableCell align="right">Rabat</TableCell>
                                         <TableCell align="right">Czas&nbsp;dostawy</TableCell>
                                         <TableCell align="right">Status</TableCell>
+                                        <TableCell>Data modyfikacji</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row">
-                                                {Moment(historyRow.modifyDate).format('DD-MM-YYYY hh:mm:ss')}
-                                            </TableCell>
+                                            <TableCell align="center"> <input type="checkbox"/></TableCell>
                                             <TableCell align="right">{historyRow.itemCode}</TableCell>
                                             <TableCell align="right">{historyRow.itemName}</TableCell>
                                             <TableCell align="right">{historyRow.codeBars}</TableCell>
                                             <TableCell align="right">{historyRow.price}</TableCell>
                                             <TableCell align="right">{historyRow.currency}</TableCell>
                                             <TableCell align="right">{historyRow.quantity}</TableCell>
+                                            <TableCell component="th" scope="row">
+                                                {Moment(historyRow.modifyDate).format('DD-MM-YYYY hh:mm:ss')}
+                                            </TableCell>
+                                            <TableCell align="center"> <button onClick={() => edit(historyRow)}>Edit </button></TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -120,7 +141,15 @@ function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
+            <EditDetails
+            name = {name}
+            barCode = {barCode}
+            valueNet = {valueNet}
+            isModalOpen={isModalOpen}
+            closeModel={closeModel}
+            />
         </React.Fragment>
     );
 }
+
 export default Row

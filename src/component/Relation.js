@@ -12,6 +12,7 @@ import axios from "axios";
 import {useSelector} from 'react-redux';
 import Row from './rowRelation'
 import '../css/Tab.css'
+import {Link} from "react-router-dom";
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -88,7 +89,7 @@ const Relation = (props) => {
     }, [])
 
     React.useEffect(() => {
-     console.log(width)
+        console.log(width)
     }, [width])
 
     // React.useEffect(() => {
@@ -107,8 +108,7 @@ const Relation = (props) => {
     // }, [company, baseNum , cusNum, rowsPerPage, page])
 
     React.useEffect(() => {
-        if(text == true) {
-            console.log('HAHAHA')
+        if (text == true) {
             setText(false)
             axios
                 .get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
@@ -126,36 +126,40 @@ const Relation = (props) => {
     //     state[fieldName] = value;
     //     this.setState(state);
     // };
-        return (
-            <div className={`${width ? 'offset' : 'withoutOffset'}`}>
+    return (
+        <div className={`${width ? 'offset' : 'withoutOffset'}`}>
+            <div className= "buttonContainer">
+                <Link to = {"/addRelations"}>Dodaj firmę</Link>
                 <input type='text' placeholder='Firma' name='company' onChange={(e) => setCompany(e.target.valu)}/>
-                <TableContainer component={Paper}>
-                    <Table aria-label="collapsible table">
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Data</StyledTableCell>
-                                <StyledTableCell align="center">Firma</StyledTableCell>
-                                <StyledTableCell align="center">Akcja</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {relations && relations.map((row) => (
-                                <Row key={row.name} row={row} text={(textContent) => setText(textContent)} />
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 100]}
-                    component="div"
-                    count={count}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
             </div>
-        );
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Data</StyledTableCell>
+                            <StyledTableCell align="center">Firma</StyledTableCell>
+                            <StyledTableCell align="center">Akcja</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {relations && relations.map((row) => (
+                            <Row key={row.name} row={row} text={(textContent) => setText(textContent)}/>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 100]}
+                component="div"
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+
+        </div>
+    );
 
 
 }

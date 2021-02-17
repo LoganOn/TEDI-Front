@@ -7,6 +7,7 @@ import Avatar from './img/src_avatar.svg'
 import Logo1 from './img/favicon1.ico'
 import {useDispatch} from "react-redux";
 import action from "./action/ChangeWidthAction";
+import axios from "axios";
 
 function Sidebar() {
 
@@ -18,13 +19,22 @@ function Sidebar() {
         dispatch(action(!visible))
     }
 
+    const logout = () => {
+        axios
+            .post(`http://localhost:8080/api/logout`)
+            .then((response) => {
+                console.log("response.data")
+            })
+       // this.props.history.push('/login');
+    }
+
     return(
         <div id="body-pd" className={ `myBody ${visible ? 'body-pd' : '' }`}>
         <header className={ `${visible ? 'header body-pd' : "header" }`} id="header">
             <div className="header__toggle" onClick={() => showSidebar()}>
                 <i className='bx bx-menu' id="header-toggle"> {visible ? <MenuIcon/> : <CloseIcon/> }</i>
             </div>
-            <div className="header__img">
+            <div className="header__img" onClick={() => logout()}>
                 <img src={Avatar} alt=""/>
             </div>
         </header>

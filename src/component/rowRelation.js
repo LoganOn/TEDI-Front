@@ -8,6 +8,8 @@ import axios from "axios";
 import {FormControlLabel, Switch} from "@material-ui/core";
 import '../css/Relation.css'
 import Moment from "moment";
+import Confirmation from "./Confirmation";
+import Modal from "react-responsive-modal";
 
 
 const useRowStyles = makeStyles({
@@ -38,45 +40,79 @@ RowRelation.propTypes = {
 };
 
 
-
 function RowRelation(props) {
-    const { row } = props;
+    const {row} = props;
     const [open, setOpen] = React.useState(false);
     const [toggle, setToggle] = React.useState(false);
-    const [details, setDetails] = React.useState( []);
+    const [details, setDetails] = React.useState([]);
     const [text, setText] = React.useState(props.text);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
     const classes = useRowStyles();
 
-    const deleteRelation = () =>{
-            axios
-                .delete(`http://localhost:8080/api/relations/${row.relationUsersId}`)
-                .then((response) => {
-                    setDetails(response.data)
-                    // setText(!text)
-                    props.text(!text)
-                })
-        }
-        React.useEffect(() => {
-        }, [text])
+    const closeModel = () => {
+        setIsModalOpen(false)
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
+
+    const deleteRelation = () => {
+        axios
+            .delete(`http://localhost:8080/api/relations/${row.relationUsersId}`)
+            .then((response) => {
+                setDetails(response.data)
+                props.text(!text)
+            })
+    }
+    React.useEffect(() => {
+        console.log(isModalOpen)
+    }, [isModalOpen])
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-                <TableCell component="th" scope="row" >
+                <TableCell component="th" scope="row">
                     {Moment(row.creationDate).format('DD-MM-YYYY hh:mm:ss')}
                 </TableCell>
-                <TableCell align="center">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
+                <TableCell
+                    align="center">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
                 {/*<TableCell align="center">{row.active}</TableCell>*/}
-                <TableCell align="center"> <button onClick={deleteRelation}>Usuń</button>
+                <TableCell align="center">
+                    <button onClick={openModal}>Usuń</button>
                     {/*<Switch onClick={toggler}></Switch>*/}
-            </TableCell>
+                </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={3}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                     </Collapse>
                 </TableCell>
             </TableRow>
+            <Confirmation
+                isModalOpen={isModalOpen}
+                deleteRelation={deleteRelation}
+                closeModel={closeModel}
+            >
+            </Confirmation>
+            {/*<Modal*/}
+            {/*    animationDuration={50}*/}
+            {/*    showCloseIcon={false}*/}
+            {/*   // styles={modalDefaultStyle}*/}
+            {/*    open={isModalOpen}*/}
+            {/*    onClose={closeModel}*/}
+            {/*    center>*/}
+            {/*    <div className="confirmatory--modal">*/}
+            {/*        <p>Czy na pewno chcesz usunąć ?</p>*/}
+            {/*        <div>*/}
+            {/*            <button className="confirmation__Yes" onClick={deleteRelation} >Tak</button>*/}
+            {/*            <button className="confirmation__No" onClick={closeModel}>Nie</button>*/}
+            {/*        </div>*/}
+
+            {/*    </div>*/}
+
+            {/*</Modal>*/}
         </React.Fragment>
     );
 }
+
 export default RowRelation
