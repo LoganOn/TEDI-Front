@@ -57,17 +57,16 @@ const EditDetails = (props) => {
                     lineNet:Number (lineNet),
                     itemCode,
                     quantity:Number(quantity),
-                    price,
+                    price:Number(price),
                     currency,
-                    lineTotal,
-                    lineVat,
+                    lineTotal:Number(lineTotal),
+                    lineVat:Number(lineVat),
                     discountPrcnt,
-                    vatPrcnt,
+                    vatPrcnt:Number(vatPrcnt),
                     // onTheWay,
                     scheduledShipDate,
                 })
             .then((response) => {
-                console.log(response.data)
                 props.closeModel()
             })
     }

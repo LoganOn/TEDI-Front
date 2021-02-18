@@ -7,7 +7,7 @@ import Avatar from './img/src_avatar.svg'
 import Logo1 from './img/favicon1.ico'
 import {useDispatch} from "react-redux";
 import action from "./action/ChangeWidthAction";
-import NotifyMe from 'react-notification-timeline';
+import NotifyMe from './NotifyMe';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import axios from "axios";
@@ -23,49 +23,17 @@ function Sidebar() {
     const [raedIndex, setReadIndex] = useState(0);
     const [sortedByKey, setSortedByKey] = useState(false);
     const [email, setEmail] = useState("");
+    const [notification, setNotification] = useState([]);
+
 
 
     const data =  [
-        {
-            "update":"70 new employees are shifted",
-            "timestamp":1596119688264
-        },
-        {
-            "update": "Time to Take a Break, TADA!!!",
-            "timestamp":1596119686811
-        },
-        {
-            "update":"70 new employees are shifted",
-            "timestamp":1596119688264
-        },
-        {
-            "update": "Time to Take a Break, TADA!!!",
-            "timestamp":1596119686811
-        }
     ]
 
-    // useEffect(() => {
-    //     // if (!sortedByKey) {
-    //     //     data.sort((a, b) => b[key] - a[key]);
-    //     // }
-    //
-    //     let readItemLs = reactLocalStorage.getObject(storageKey);
-    //     let readMsgId = Object.keys(readItemLs).length > 0 ? readItemLs['id'] : '';
-    //
-    //     let readIndex = (readMsgId === '') ? data.length :
-    //         data.findIndex(
-    //             elem =>
-    //                 elem[key] === readMsgId);
-    //
-    //
-    //     readIndex === -1 ? readIndex = data.length : readIndex;
-    //     setReadIndex(readIndex);
-    //
-    //     (data.length && readIndex) > 0 ?
-    //         setShowCount(true) : setShowCount(false);
-    //     setMessageCount(readIndex);
-    //
-    // }, [data]);
+    useEffect(() => {
+
+
+    }, [data]);
 
     const showSidebar = () => {
         setVisible(prev => !prev)
@@ -89,9 +57,21 @@ function Sidebar() {
                 console.log(response.data)
                 setEmail(response.data.email)
             })
+        axios
+            .get(`http://localhost:8080/api/notifications/users/${localStorage.getItem("userId")}`)
+            .then((response) => {
+                //setEmail(response.data.email)
+            })
     });
 
-
+    const updateNotification = (props) =>{
+        let tempArray = [];
+        props.forEach(data => {
+            let temp = this.createData(data.creationDate, data.content, data.reader)
+            tempArray.push(temp)
+        })
+        setNotification(tempArray);
+    }
     const handleClick = (event) => {
         setShow(!show);
         setTarget(event.target);
@@ -112,7 +92,7 @@ function Sidebar() {
                 sortedByKey={false}
                 showDate={true}
                 size={32}
-                color="yellow"
+                color="white"
             />
             <div className="header__img">
                 {/*<a>{email}</a>*/}

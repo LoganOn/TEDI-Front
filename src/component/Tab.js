@@ -42,7 +42,7 @@ class Tab extends Component{
             isError:false,
             page: 0,
             rowsPerPage: 10,
-            count:100,
+            count:0,
             company:'',
             baseNum: '',
             cusNum: '',
@@ -156,6 +156,7 @@ class Tab extends Component{
             let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal, data.description)
             tempArray.push(temp)
         })
+        // this.setState({delivery : tempArray, count : props.count})
         this.setState({delivery : tempArray})
     }
 }
