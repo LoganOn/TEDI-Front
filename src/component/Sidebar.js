@@ -7,25 +7,94 @@ import Avatar from './img/src_avatar.svg'
 import Logo1 from './img/favicon1.ico'
 import {useDispatch} from "react-redux";
 import action from "./action/ChangeWidthAction";
+import NotifyMe from 'react-notification-timeline';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
 import axios from "axios";
 
 function Sidebar() {
 
     const [visible, setVisible] = useState(true);
     const dispatch = useDispatch();
+    const [showCount, setShowCount] = useState(false);
+    const [messageCount, setMessageCount] = useState(0);
+    const [show, setShow] = useState(false);
+    const [target, setTarget] = useState(null);
+    const [raedIndex, setReadIndex] = useState(0);
+    const [sortedByKey, setSortedByKey] = useState(false);
+    const [email, setEmail] = useState("");
+
+
+    const data =  [
+        {
+            "update":"70 new employees are shifted",
+            "timestamp":1596119688264
+        },
+        {
+            "update": "Time to Take a Break, TADA!!!",
+            "timestamp":1596119686811
+        },
+        {
+            "update":"70 new employees are shifted",
+            "timestamp":1596119688264
+        },
+        {
+            "update": "Time to Take a Break, TADA!!!",
+            "timestamp":1596119686811
+        }
+    ]
+
+    // useEffect(() => {
+    //     // if (!sortedByKey) {
+    //     //     data.sort((a, b) => b[key] - a[key]);
+    //     // }
+    //
+    //     let readItemLs = reactLocalStorage.getObject(storageKey);
+    //     let readMsgId = Object.keys(readItemLs).length > 0 ? readItemLs['id'] : '';
+    //
+    //     let readIndex = (readMsgId === '') ? data.length :
+    //         data.findIndex(
+    //             elem =>
+    //                 elem[key] === readMsgId);
+    //
+    //
+    //     readIndex === -1 ? readIndex = data.length : readIndex;
+    //     setReadIndex(readIndex);
+    //
+    //     (data.length && readIndex) > 0 ?
+    //         setShowCount(true) : setShowCount(false);
+    //     setMessageCount(readIndex);
+    //
+    // }, [data]);
 
     const showSidebar = () => {
         setVisible(prev => !prev)
         dispatch(action(!visible))
     }
 
-    const logout = () => {
+    // const logout = () => {
+    //     axios
+    //         .post(`http://localhost:8080/api/logout`)
+    //         .then((response) => {
+    //             console.log("response.data")
+    //         })
+    //    // this.props.history.push('/login');
+    // }
+
+
+    useEffect(() => {
         axios
-            .post(`http://localhost:8080/api/logout`)
+            .get(`http://localhost:8080/api/users/${localStorage.getItem("userId")}`)
             .then((response) => {
-                console.log("response.data")
+                console.log(response.data)
+                setEmail(response.data.email)
             })
-       // this.props.history.push('/login');
+    });
+
+
+    const handleClick = (event) => {
+        setShow(!show);
+        setTarget(event.target);
     }
 
     return(
@@ -34,8 +103,26 @@ function Sidebar() {
             <div className="header__toggle" onClick={() => showSidebar()}>
                 <i className='bx bx-menu' id="header-toggle"> {visible ? <MenuIcon/> : <CloseIcon/> }</i>
             </div>
-            <div className="header__img" onClick={() => logout()}>
-                <img src={Avatar} alt=""/>
+            <NotifyMe
+                data={data}
+                storageKey='notific_key'
+                notific_key='timestamp'
+                notific_value='update'
+                heading='Notification Alerts'
+                sortedByKey={false}
+                showDate={true}
+                size={32}
+                color="yellow"
+            />
+            <div className="header__img">
+                {/*<a>{email}</a>*/}
+                    <DropdownButton className="dropdownButton" id="dropdown-header__img-button" title={email}>
+                        <Dropdown.ItemText className="dropdownButton">{email}</Dropdown.ItemText>
+                        <Dropdown.Item className="dropdownButton" as="button">Action</Dropdown.Item>
+                        <Dropdown.Item  className="dropdownButton" as="button">Another action</Dropdown.Item>
+                        <Dropdown.Item className="dropdownButton" as="button">Something else</Dropdown.Item>
+                    </DropdownButton>
+                {/*<img src={Avatar} alt=""/>*/}
             </div>
         </header>
         <div className={ `${visible ? 'l-navbar show' : "l-navbar"}`} id="nav-bar">

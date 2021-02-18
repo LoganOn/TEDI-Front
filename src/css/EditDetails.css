@@ -1,0 +1,36 @@
+
+.grid-container-details {
+    display: grid;
+    margin: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    ". ."
+    ". ."
+    ". ."
+    ". .";
+}
+
+.grid-rows-details{
+    margin: 10px;
+    font-weight: 500;
+}
+
+.grid-rows-details-input {
+    margin-top: 10px;
+    border-radius: 55px;
+    background-color: #f0f0f0;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    padding-left: 10px;
+}
+
+.grid-rows-details-input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
