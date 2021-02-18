@@ -13,14 +13,14 @@ class App extends Component {
     render() {
         return (
             <div>
-            <Router>
-               <Route path='/(|home|relation|addRelations|userPanel)' component={Sidebar} />
-               <Route path='/home' component={Tab} />
-               <Route path='/relation' component={Relation} />
-               <Route path='/addRelations' component={AddRelations}/>
-               <Route path='/userPanel' component={UserPanel}/>
-                <Route path='/login' component={Login}/>
-            </Router>
+                <Router>
+                    <Route path='/(|home|relation|addRelations|userPanel)' component={Sidebar}/>
+                    <Route path='/home' component={Tab}/>
+                    <Route path='/relation' component={Relation}/>
+                    <Route path='/addRelations' component={AddRelations}/>
+                    <Route path='/userPanel' component={UserPanel}/>
+                    <Route path='/login' component={Login}/>
+                </Router>
             </div>
         )
     }

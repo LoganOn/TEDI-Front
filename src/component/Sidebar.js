@@ -8,6 +8,8 @@ import Logo1 from './img/favicon1.ico'
 import {useDispatch} from "react-redux";
 import action from "./action/ChangeWidthAction";
 import NotifyMe from 'react-notification-timeline';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
 import axios from "axios";
 
 function Sidebar() {
@@ -20,6 +22,7 @@ function Sidebar() {
     const [target, setTarget] = useState(null);
     const [raedIndex, setReadIndex] = useState(0);
     const [sortedByKey, setSortedByKey] = useState(false);
+    const [email, setEmail] = useState("");
 
 
     const data =  [
@@ -69,14 +72,25 @@ function Sidebar() {
         dispatch(action(!visible))
     }
 
-    const logout = () => {
+    // const logout = () => {
+    //     axios
+    //         .post(`http://localhost:8080/api/logout`)
+    //         .then((response) => {
+    //             console.log("response.data")
+    //         })
+    //    // this.props.history.push('/login');
+    // }
+
+
+    useEffect(() => {
         axios
-            .post(`http://localhost:8080/api/logout`)
+            .get(`http://localhost:8080/api/users/${localStorage.getItem("userId")}`)
             .then((response) => {
-                console.log("response.data")
+                console.log(response.data)
+                setEmail(response.data.email)
             })
-       // this.props.history.push('/login');
-    }
+    });
+
 
     const handleClick = (event) => {
         setShow(!show);
@@ -100,21 +114,15 @@ function Sidebar() {
                 size={32}
                 color="yellow"
             />
-            <div className="header__img" onClick={() => logout()}>
-
-                {/*<div className="notification-container">*/}
-                {/*    <div className =*/}
-                {/*             {*/}
-                {/*                 showCount ?*/}
-                {/*                     'notification notify show-count' :*/}
-                {/*                     'notification notify'*/}
-                {/*             }*/}
-                {/*         data-count={messageCount}*/}
-                {/*         onClick={event => handleClick(event)}>*/}
-                {/*        <Bell color="yellow" size={64} />*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                <img src={Avatar} alt=""/>
+            <div className="header__img">
+                {/*<a>{email}</a>*/}
+                    <DropdownButton className="dropdownButton" id="dropdown-header__img-button" title={email}>
+                        <Dropdown.ItemText className="dropdownButton">{email}</Dropdown.ItemText>
+                        <Dropdown.Item className="dropdownButton" as="button">Action</Dropdown.Item>
+                        <Dropdown.Item  className="dropdownButton" as="button">Another action</Dropdown.Item>
+                        <Dropdown.Item className="dropdownButton" as="button">Something else</Dropdown.Item>
+                    </DropdownButton>
+                {/*<img src={Avatar} alt=""/>*/}
             </div>
         </header>
         <div className={ `${visible ? 'l-navbar show' : "l-navbar"}`} id="nav-bar">

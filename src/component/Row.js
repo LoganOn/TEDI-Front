@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import Moment from 'moment';
 import EditDetails from "./EditDetails";
+import ShowMoreText from 'react-show-more-text';
 
 const useRowStyles = makeStyles({
     root: {
@@ -48,16 +49,27 @@ function Row(props) {
     const [open, setOpen] = useState(false);
     const [details, setDetails] = useState([]);
     const classes = useRowStyles();
-    const [name, setName] = useState()
-    const [barCode, setBarCode] = useState()
-    const [valueNet, setValueNet] = useState()
+    const [itemName, setItemName] = useState()
+    const [id, setId] = useState()
+    const [itemCode, setItemCode] = useState()
+    const [quantity, setQuantity] = useState(0)
+    const [codeBars, setCodeBars] = useState()
+    const [lineNet, setLineNet] = useState(0)
+    const [price, setPrice] = useState(0)
+    const [currency, setCurrency] = useState()
+    const [lineTotal, setLineTotal] = useState(0)
+    const [lineVat, setLineVat] = useState(0)
+    const [discountPrcnt, setDiscountPrcnt] = useState()
+    const [vatPrcnt, setVatPrcnt] = useState()
+    const [onTheWay, setOnTheWay] = useState()
+    const [scheduledShipDate, setScheduledShipDate] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleShow = () => {
         if (!open) {
             axios
                 .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
                 .then((response) => {
-                    // console.log(response.data)
+                    console.log(response.data)
                     setDetails(response.data)
                 })
         }
@@ -65,12 +77,22 @@ function Row(props) {
     }
 
     //TODO do poprawy valuenet
-    const edit = (detail) =>{
-        setName(detail.itemName);
-        setBarCode(detail.codeBars);
-        setValueNet(detail.price);
+    const edit = (detail) => {
+        setId(detail.id);
+        setItemCode(detail.itemCode);
+        setItemName(detail.itemName);
+        setCodeBars(detail.codeBars);
+        setQuantity(detail.quantity);
+        setPrice(detail.price);
+        setCurrency(detail.currency);
+        setLineTotal(detail.lineTotal);
+        setLineNet(detail.lineNet);
+        setLineVat(detail.lineVat);
+        setDiscountPrcnt(detail.discountPrcnt);
+        setVatPrcnt(detail.vatPrcnt);
+        setOnTheWay(details.onTheWay);
+        setScheduledShipDate(detail.scheduledShipDate);
         setIsModalOpen(true);
-        console.log(detail.itemName)
     }
 
     const closeModel = () => {
@@ -91,48 +113,71 @@ function Row(props) {
                     align="left">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
                 <TableCell align="left">{row.baseRef}</TableCell>
                 <TableCell align="left">{row.numberOrderCustomer}</TableCell>
+                <TableCell align="right">{row.docTotal}</TableCell>
                 <TableCell align="right">{row.docNet}</TableCell>
                 <TableCell align="right">{row.docVatSum}</TableCell>
-                <TableCell align="right">{row.docTotal}</TableCell>
+                <TableCell align="left">
+                    <ShowMoreText
+                        lines={1}
+                        more='Rozwiń'
+                        less='Zwiń'
+                        className='content-css'
+                        anchorClass='my-anchor-css-class'
+
+                        width={280}>{row.description}</ShowMoreText></TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={9}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
+                        <Box margin={0}>
                             <Typography variant="h6" gutterBottom component="div">
                                 Szczegóły
                             </Typography>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="left">Powiadomienie</TableCell>
-                                        <TableCell>Nr&nbsp;kat</TableCell>
-                                        <TableCell align="right">Nazwa</TableCell>
-                                        <TableCell align="right">EAN</TableCell>
-                                        <TableCell align="right">Cena netto</TableCell>
-                                        <TableCell align="right">Waluta</TableCell>
+                                        <TableCell align="left">Pow</TableCell>
+                                        <TableCell align="left">Nr&nbsp;kat</TableCell>
+                                        <TableCell align="left">Nazwa</TableCell>
+                                        <TableCell align="left">EAN</TableCell>
                                         <TableCell align="right">Ilość</TableCell>
+                                        <TableCell align="right">Cena</TableCell>
+                                        <TableCell align="left">Waluta</TableCell>
+                                        <TableCell align="right">Wartość</TableCell>
+                                        <TableCell align="right">Wartość netto</TableCell>
+                                        <TableCell align="right">Wartość Vat</TableCell>
                                         <TableCell align="right">Vat %</TableCell>
                                         <TableCell align="right">Rabat</TableCell>
-                                        <TableCell align="right">Czas&nbsp;dostawy</TableCell>
-                                        <TableCell align="right">Status</TableCell>
+                                        <TableCell align="left">Czas&nbsp;dostawy</TableCell>
+                                        <TableCell align="left">Status</TableCell>
                                         <TableCell>Data modyfikacji</TableCell>
+                                        <TableCell>Akcja</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
                                             <TableCell align="center"> <input type="checkbox"/></TableCell>
-                                            <TableCell align="right">{historyRow.itemCode}</TableCell>
+                                            <TableCell align="left">{historyRow.itemCode}</TableCell>
                                             <TableCell align="right">{historyRow.itemName}</TableCell>
                                             <TableCell align="right">{historyRow.codeBars}</TableCell>
-                                            <TableCell align="right">{historyRow.price}</TableCell>
-                                            <TableCell align="right">{historyRow.currency}</TableCell>
                                             <TableCell align="right">{historyRow.quantity}</TableCell>
+                                            <TableCell align="right">{historyRow.price}</TableCell>
+                                            <TableCell align="left">{historyRow.currency}</TableCell>
+                                            <TableCell align="right">{historyRow.lineTotal}</TableCell>
+                                            <TableCell align="right">{historyRow.lineNet}</TableCell>
+                                            <TableCell align="right">{historyRow.lineVat}</TableCell>
+                                            <TableCell align="right">{historyRow.vatPrcnt}</TableCell>
+                                            <TableCell align="right">{historyRow.discountPrcnt}</TableCell>
+                                            <TableCell align="right">{historyRow.scheduledShipDate}</TableCell>
+                                            <TableCell
+                                                align="left">{historyRow.onTheWay ? "W drodze" : "Nie wysłany"}</TableCell>
                                             <TableCell component="th" scope="row">
                                                 {Moment(historyRow.modifyDate).format('DD-MM-YYYY hh:mm:ss')}
                                             </TableCell>
-                                            <TableCell align="center"> <button onClick={() => edit(historyRow)}>Edit </button></TableCell>
+                                            <TableCell align="center">
+                                                <button onClick={() => edit(historyRow)}>Edit</button>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -142,11 +187,24 @@ function Row(props) {
                 </TableCell>
             </TableRow>
             <EditDetails
-            name = {name}
-            barCode = {barCode}
-            valueNet = {valueNet}
-            isModalOpen={isModalOpen}
-            closeModel={closeModel}
+                itemName={itemName}
+                codeBars={codeBars}
+                lineNet={lineNet}
+                id={id}
+                itemCode={itemCode}
+                quantity={quantity}
+                codeBars={codeBars}
+                lineNet={lineNet}
+                price={price}
+                currency={currency}
+                lineTotal={lineTotal}
+                lineVat={lineVat}
+                discountPrcnt={discountPrcnt}
+                vatPrcnt={vatPrcnt}
+                onTheWay={onTheWay}
+                scheduledShipDate={scheduledShipDate}
+                isModalOpen={isModalOpen}
+                closeModel={closeModel}
             />
         </React.Fragment>
     );

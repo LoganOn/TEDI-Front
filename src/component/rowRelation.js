@@ -94,23 +94,6 @@ function RowRelation(props) {
                 closeModel={closeModel}
             >
             </Confirmation>
-            {/*<Modal*/}
-            {/*    animationDuration={50}*/}
-            {/*    showCloseIcon={false}*/}
-            {/*   // styles={modalDefaultStyle}*/}
-            {/*    open={isModalOpen}*/}
-            {/*    onClose={closeModel}*/}
-            {/*    center>*/}
-            {/*    <div className="confirmatory--modal">*/}
-            {/*        <p>Czy na pewno chcesz usunąć ?</p>*/}
-            {/*        <div>*/}
-            {/*            <button className="confirmation__Yes" onClick={deleteRelation} >Tak</button>*/}
-            {/*            <button className="confirmation__No" onClick={closeModel}>Nie</button>*/}
-            {/*        </div>*/}
-
-            {/*    </div>*/}
-
-            {/*</Modal>*/}
         </React.Fragment>
     );
 }

@@ -50,7 +50,7 @@ class Tab extends Component{
         }
     }
 
-    createData(deliveryOrderId, creationDate, supplier, customer, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal) {
+    createData(deliveryOrderId, creationDate, supplier, customer, baseRef, numberOrderCustomer, docNet, docVatSum, docTotal, description) {
         return {
             deliveryOrderId,
             creationDate,
@@ -61,6 +61,7 @@ class Tab extends Component{
             docNet,
             docVatSum,
             docTotal,
+            description,
         };
     }
 
@@ -122,11 +123,12 @@ class Tab extends Component{
                                 <StyledTableCell />
                                 <StyledTableCell>Data</StyledTableCell>
                                 <StyledTableCell>{localStorage.getItem("role") == "customer" ? 'Dostawca' : 'Klient' }</StyledTableCell>
-                                <StyledTableCell align="left">Numer&nbsp;zamówienia</StyledTableCell>
-                                <StyledTableCell align="left">Numer&nbsp;klienta</StyledTableCell>
+                                <StyledTableCell align="left">{localStorage.getItem("role") == "customer" ? 'Numer dostawcy' : 'Numer zamówienia'}</StyledTableCell>
+                                <StyledTableCell align="left">{localStorage.getItem("role") == "customer" ? 'Numer zamówienia' : 'Numer klienta'}</StyledTableCell>
+                                <StyledTableCell align="right">Wartość</StyledTableCell>
                                 <StyledTableCell align="right">Wartość&nbsp;netto</StyledTableCell>
-                                <StyledTableCell align="right">Vat</StyledTableCell>
-                                <StyledTableCell align="right">Wartość&nbsp;brutto</StyledTableCell>
+                                <StyledTableCell align="right">Wartość&nbsp;Vat</StyledTableCell>
+                                <StyledTableCell align="left">Opis</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -151,7 +153,7 @@ class Tab extends Component{
     uploadDate(props) {
         let tempArray = [];
         props.forEach(data => {
-            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal)
+            let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal, data.description)
             tempArray.push(temp)
         })
         this.setState({delivery : tempArray})
