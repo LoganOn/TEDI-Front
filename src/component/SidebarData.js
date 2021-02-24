@@ -4,31 +4,24 @@ import MailIcon from '@material-ui/icons/Mail';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import GroupIcon from '@material-ui/icons/Group';
+import { AiFillBook } from "react-icons/ai";
+import { AiFillDatabase } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 
 export const SidebarData = [
     {
-        title:"Home",
-        icon:<HomeIcon />,
+        title:"Zamówienia",
+        icon:<AiFillBook />,
         link:"/home",
     },
     {
-        title:"Mailbox",
-        icon:<MailIcon />,
+        title:"Relacje",
+        icon:<AiOutlineUser />,
         link:"/relation",
     },
     {
-        title:"Analytics",
-        icon:<AssessmentIcon />,
+        title:"Towary",
+        icon:<AiFillDatabase />,
         link:"/analiytics",
-    },
-    {
-        title:"Dashboard",
-        icon:<DashboardIcon />,
-        link:"/dashboard",
-    },
-    {
-        title:"Friends",
-        icon:<GroupIcon />,
-        link:"/friends",
     }
 ];

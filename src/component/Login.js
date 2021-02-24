@@ -228,19 +228,19 @@ class Login extends Component{
                     <div className="signin-signup">
 
                         <form action="#" className="sign-in-form">
-                            <h2 className="title">Sign in</h2>
+                            <h2 className="title">Logowanie</h2>
                             <div className="input-field">
                                 <i className="fas fa-user"></i>
                                 <input type="text" onChange={(e) => this.updateField('email', e.target.value)} placeholder="Email" value={this.state.email.value} />
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-lock"></i>
-                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Password"/>
+                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Hasło"/>
                             </div>
-                            <input type="submit" value="Login" className="btn-login solid" onClick={this.handleLogin}/>
+                            <input type="submit" value="Zaloguj" className="btn-login solid" onClick={this.handleLogin}/>
                         </form>
                         <form action="#" className="sign-up-form">
-                            <h2 className="title">Sign up</h2>
+                            <h2 className="title">Rejestracja</h2>
                             <i className="fas fa-user"></i>
                             {/*<select defaultValue="select" className="input-field" onChange={(e) => this.updateField('company', e.target.value)}>*/}
                             {/*    <option  hidden value="select" disabled>Rola</option>*/}
@@ -256,7 +256,7 @@ class Login extends Component{
                             />
                             <div className="input-field">
                                 <i className="fas fa-user"></i>
-                                <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Company"/>
+                                <input type="text" onChange={(e) => this.updateField('company', e.target.value)} placeholder="Nazwa firmy"/>
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-envelope"></i>
@@ -264,13 +264,13 @@ class Login extends Component{
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-lock"></i>
-                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Password"/>
+                                <input type="password" onChange={(e) => this.updateField('password', e.target.value)} placeholder="Hasło"/>
                             </div>
                             <div className="input-field">
                                 <i className="fas fa-lock"></i>
-                                <input type="password" onChange={(e) => this.updateField('repassword', e.target.value)} placeholder="Repassword"/>
+                                <input type="password" onChange={(e) => this.updateField('repassword', e.target.value)} placeholder="Powtórz hasło"/>
                             </div>
-                            <input type="submit" className="btn-login" value="Sign up" onClick={this.handleRegister}/>
+                            <input type="submit" className="btn-login" value="Zarejestruj" onClick={this.handleRegister}/>
                         </form>
                     </div>
                 </div>
@@ -278,26 +278,26 @@ class Login extends Component{
                 <div className="panels-login-container">
                     <div className="panel left-panel">
                         <div className="content">
-                            <h3>New here ?</h3>
+                            <h3>Nie masz konta ? </h3>
                             <p>
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-                                ex ratione. Aliquid!
+                                {/*Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,*/}
+                                {/*ex ratione. Aliquid!*/}
                             </p>
                             <button className="btn-login transparent" id="sign-in-btn-login" onClick={this.handleClick}>
-                                Sign up
+                                Rejestracja
                             </button>
                         </div>
                         <img className="image"  src={LoginImage} alt=""/>
                     </div>
                     <div className="panel right-panel">
                         <div className="content">
-                            <h3>One of us ?</h3>
+                            <h3>Masz już konto ?</h3>
                             <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                                laboriosam ad deleniti.
+                                {/*Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum*/}
+                                {/*laboriosam ad deleniti.*/}
                             </p>
                             <button className="btn-login transparent" id="sign-in-btn-login" onClick={this.handleClick}>
-                                Sign in
+                                Logowanie
                             </button>
                         </div>
                         <img src={RegisterImage}  className="image" alt=""/>

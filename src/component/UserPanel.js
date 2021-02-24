@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import Switch from "react-switch";
 import axios from "axios";
 import '../css/UserPanel.css'
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from 'react-bootstrap/Dropdown'
 
 
 class UserPanel extends Component {
@@ -54,7 +56,7 @@ class UserPanel extends Component {
                     <label className="grid-rows">Notification</label>
                     <Switch className="grid-rows" onChange={this.handleChange} checked={this.state.checked}/>
                 </div>
-                <button type="submit" onChange={this.handleChange} checked={this.state.checked}>Zapisz</button>
+                <button type="submit"  className="btn-customer-panel" onChange={this.handleChange} checked={this.state.checked}>Zapisz</button>
             </div>
             </div>
         );

@@ -34,7 +34,7 @@ const NotifyMe = props => {
     const notificationMsg = props.notific_value;
     const sortedByKey = props.sortedByKey;
     const heading = props.heading || 'Notifications';
-    const bellSize = props.size || 32;
+    const bellSize = props.size || 40;
     const bellColor = props.color || '#FFFFFF';
     const multiLineSplitter = props.multiLineSplitter || '\n';
     const showDate = props.showDate || false;
@@ -147,7 +147,7 @@ const NotifyMe = props => {
                 <div className={showCount ? 'notification notify show-count' : 'notification notify'}
                      data-count={messageCount}
                      onClick={event => handleClick(event)}>
-                    <Bell color={bellColor} size={bellSize} />
+                    <Bell color={bellColor} size={20} />
                 </div>
             </div>
 
@@ -162,7 +162,7 @@ const NotifyMe = props => {
                     onHide={hide}
                 >
                     <Popover id="popover-contained">
-                        <Popover.Title as="h3">{heading}</Popover.Title>
+                        <Popover.Title as="h3">Powiadomienia</Popover.Title>
                         <Popover.Content style={{ padding: '3px 3px' }}>
                             {showCount && <div>
                                 <Button variant="link" onClick={props.markAsReadFn || markAsRead}>

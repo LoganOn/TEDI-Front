@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Modal from 'react-responsive-modal';
-import '../css/EditDetails.css';
+import '../css/AddOrder.css';
 import axios from "axios";
 
 
@@ -11,7 +11,7 @@ const modalDefaultStyle = {
         }
 }
 
-const EditDetails = (props) => {
+const AddOrder = (props) => {
 
     const [id, setId] = useState(props.id)
     const [itemName, setItemName] = useState(props.itemName)
@@ -79,49 +79,32 @@ const EditDetails = (props) => {
             open={props.isModalOpen}
             onClose={props.closeModel}
             center>
-            <div className="grid-container-details">
-                <label className="grid-rows-details">Indeks</label>
-                <input className="grid-rows-details-input" value={itemCode}
+            <div className="grid-container-order">
+                <label className="grid-rows-order">Klient</label>
+                <input className="grid-rows-order-input"
                        onChange={(e) => setItemCode(e.target.value)}/>
-                <label className="grid-rows-details">Nazwa</label>
-                <input className="grid-rows-details-input" value={itemName}
+                <label className="grid-rows-order">Numer zamówienia</label>
+                <input className="grid-rows-order-input"
                        onChange={(e) => setItemName(e.target.value)}/>
-                <label className="grid-rows-details">EAN</label>
-                <input className="grid-rows-details-input" value={codeBars}
+                <label className="grid-rows-order">Numer klienta</label>
+                <input className="grid-rows-order-input"
                        onChange={(e) => setCodeBars(e.target.value)}/>
-                <label className="grid-rows-details">Ilość</label>
-                <input className="grid-rows-details-input" value={quantity}
+                <label className="grid-rows-order">Wartość</label>
+                <input className="grid-rows-order-input"
                        onChange={(e) => setQuantity(e.target.value)}/>
-                <label className="grid-rows-details">Cena</label>
-                <input className="grid-rows-details-input" value={price} onChange={(e) => setPrice(e.target.value)}/>
-                <label className="grid-rows-details">Waluta</label>
-                <input className="grid-rows-details-input" value={currency}
-                       onChange={(e) => setCurrency(e.target.value)}/>
-                <label className="grid-rows-details">Wartość</label>
-                <input className="grid-rows-details-input" value={lineTotal}
-                       onChange={(e) => setLineTotal(e.target.value)}/>
-                <label className="grid-rows-details">Wartość netto</label>
-                <input className="grid-rows-details-input" value={lineNet}
+                <label className="grid-rows-order">Wartość netto</label>
+                <input className="grid-rows-order-input"
                        onChange={(e) => setLineNet(e.target.value)}/>
-                <label className="grid-rows-details">Wartość Vat</label>
-                <input className="grid-rows-details-input" value={lineVat}
+                <label className="grid-rows-order">Wartość Vat</label>
+                <input className="grid-rows-order-input" value={lineVat}
                        onChange={(e) => setLineVat(e.target.value)}/>
-                <label className="grid-rows-details">Vat</label>
-                <input className="grid-rows-details-input" value={vatPrcnt}
-                       onChange={(e) => setVatPrcnt(e.target.value)}/>
-                <label className="grid-rows-details">Rabat</label>
-                <input className="grid-rows-details-input" value={discountPrcnt}
-                       onChange={(e) => setDiscountPrcnt(e.target.value)}/>
-                <label className="grid-rows-details">Czas dostawy</label>
-                <input className="grid-rows-details-input" value={scheduledShipDate}
-                       onChange={(e) => setScheduledShipDate(e.target.value)}/>
-                <label className="grid-rows-details">Status</label>
-                <input className="grid-rows-details-input" value={onTheWay}
+                <label className="grid-rows-order">Opis</label>
+                <textarea className="grid-rows-order-input"
                        onChange={(e) => setOnTheWay(e.target.value)}/>
-                <button className="grid-rows-details-button-add" onClick={submit}>Zapisz</button>
-                <button className="grid-rows-details-button-cancel" onClick={props.closeModel}>Anuluj</button>
+                <button className="grid-rows-order-button-add" onClick={submit}>Zapisz</button>
+                <button className="grid-rows-order-button-cancel" onClick={props.closeModel}>Anuluj</button>
             </div>
         </Modal>
     );
 };
-export default EditDetails;
+export default AddOrder;

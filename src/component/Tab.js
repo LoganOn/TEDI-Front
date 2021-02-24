@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +12,7 @@ import axios from "axios";
 import {connect} from 'react-redux';
 import Row from './Row'
 import '../css/Tab.css'
+import AddOrder from "./AddOrder";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -42,11 +43,13 @@ class Tab extends Component{
             isError:false,
             page: 0,
             rowsPerPage: 10,
-            count:0,
+            count: 1,
             company:'',
             baseNum: '',
             cusNum: '',
-            cancelToken: undefined
+            cancelToken: undefined,
+            refresh: false,
+            isModalOpen:false,
         }
     }
 
@@ -78,8 +81,8 @@ class Tab extends Component{
         axios
             .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${this.state.company}&baseRef=${this.state.baseNum}&cusNumber=${this.state.cusNum}`)
             .then((response) => {
-                console.log(response.data)
-                this.uploadDate(response.data)
+                this.setState({count : response.data.count})
+                this.uploadDate(response.data.deliveryOrders)
             })
     }
 
@@ -93,13 +96,13 @@ class Tab extends Component{
             axios
                 .get(`http://localhost:8080/api/delivery/${localStorage.getItem("role")}/${localStorage.getItem("userId")}/?name=${company}&baseRef=${baseNum}&cusNumber=${cusNum}&size=${rowsPerPage}&page=${page}`, { cancelToken: this.state.cancelToken.token })
                 .then((response) => {
-                    console.log(response)
                     if(response.status == 204)
                     {
                         this.uploadDate([])
                     }
                     else
-                        this.uploadDate(response.data)
+                        this.setState({count: response.data.count})
+                        this.uploadDate(response.data.deliveryOrders)
                 })
         }
     }
@@ -113,9 +116,10 @@ class Tab extends Component{
     render() {
         return (
             <div className={`${this.props.width ? 'offset' : 'withoutOffset'}`}>
-                <input type='text' placeholder='Firma' name='company' onChange={(e) => this.setState({company : e.target.value})}/>
-                <input type='text' placeholder='Numer dostawcy' name='baseRef' onChange={(e) => this.setState({baseNum : e.target.value})}/>
-                <input type='text' placeholder='Numer klienta' name='cusNumber' onChange={(e) => this.setState({cusNum : e.target.value})}/>
+                <input className="input-searching-table" type='text' placeholder='Firma' name='company' onChange={(e) => this.setState({company : e.target.value})}/>
+                <input className="input-searching-table" type='text' placeholder='Numer dostawcy' name='baseRef' onChange={(e) => this.setState({baseNum : e.target.value})}/>
+                <input className="input-searching-table" type='text' placeholder='Numer klienta' name='cusNumber' onChange={(e) => this.setState({cusNum : e.target.value})}/>
+                <button className="order-container-buttons" onClick={() => {this.add()}}>Dodaj zamówienie</button>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -137,6 +141,7 @@ class Tab extends Component{
                             ))}
                         </TableBody>
                     </Table>
+
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25, 100]}
@@ -147,8 +152,34 @@ class Tab extends Component{
                     onPageChange={this.handleChangePage}
                     onRowsPerPageChange={this.handleChangeRowsPerPage}
                     />
+                <AddOrder
+                    // itemName={}
+                    // codeBars={}
+                    // lineNet={}
+                    // id={}
+                    // itemCode={}
+                    // quantity={}
+                    // codeBars={}
+                    // lineNet={}
+                    // price={}
+                    // currency={}
+                    // lineTotal={}
+                    // lineVat={}
+                    // discountPrcnt={}
+                    // vatPrcnt={}
+                    // onTheWay={}
+                    // scheduledShipDate={}
+                    isModalOpen={this.state.isModalOpen}
+                    closeModel={this.state.closeModel}
+                    // refreshDetails={refreshDetails}
+                    // refreshDetails={(refresh) => setRefresh(refresh)}
+                />
             </div>
         );
+    }
+
+    add(){
+        this.setState({isModalOpen: true})
     }
     uploadDate(props) {
         let tempArray = [];
@@ -156,7 +187,6 @@ class Tab extends Component{
             let temp = this.createData(data.deliveryOrderId, data.creationDate, data.supplier.name, data.customer.name, data.baseRef, data.numberOrderCustomer, data.docNet, data.docVatSum, data.docTotal, data.description)
             tempArray.push(temp)
         })
-        // this.setState({delivery : tempArray, count : props.count})
         this.setState({delivery : tempArray})
     }
 }

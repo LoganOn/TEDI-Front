@@ -83,13 +83,11 @@ const Relation = (props) => {
         axios
             .get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
             .then((response) => {
-                console.log(response.data)
                 uploadDate(response.data)
             })
     }, [])
 
     React.useEffect(() => {
-        console.log(width)
     }, [width])
 
     // React.useEffect(() => {
@@ -113,11 +111,9 @@ const Relation = (props) => {
             axios
                 .get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
                 .then((response) => {
-                    console.log(response.data)
                     uploadDate(response.data)
                 })
         }
-        console.log(text)
     }, [text])
 
 
@@ -128,11 +124,15 @@ const Relation = (props) => {
     // };
     return (
         <div className={`${width ? 'offset' : 'withoutOffset'}`}>
-            <div className= "buttonContainer">
-                <Link to = {"/addRelations"}>Dodaj firmę</Link>
-                <input type='text' placeholder='Firma' name='company' onChange={(e) => setCompany(e.target.valu)}/>
+            <div className="buttonContainer">
+                <div className="buttonContainer-link">
+                    {/*<a to={"/addRelations"}>Dodaj firmę</a>*/}
+                    <a  className="buttonContainer-link" href={"/addRelations"}>Dodaj firmę</a>
+                </div>
+                <input className="buttonContainer-input" type='text' placeholder='Firma' name='company'
+                       onChange={(e) => setCompany(e.target.valu)}/>
             </div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} className="TableRelations-grid">
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
@@ -151,11 +151,12 @@ const Relation = (props) => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 component="div"
-                count={count}
+                count={3}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                className="TableRelations-grid"
             />
 
         </div>

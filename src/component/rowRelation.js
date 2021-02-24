@@ -66,7 +66,6 @@ function RowRelation(props) {
             })
     }
     React.useEffect(() => {
-        console.log(isModalOpen)
     }, [isModalOpen])
     return (
         <React.Fragment>
@@ -78,7 +77,7 @@ function RowRelation(props) {
                     align="center">{localStorage.getItem("role") == "customer" ? row.supplier : row.customer}</TableCell>
                 {/*<TableCell align="center">{row.active}</TableCell>*/}
                 <TableCell align="center">
-                    <button onClick={openModal}>Usuń</button>
+                    <button className="grid-rows-relations-button-cancel" onClick={openModal}>Usuń</button>
                     {/*<Switch onClick={toggler}></Switch>*/}
                 </TableCell>
             </TableRow>

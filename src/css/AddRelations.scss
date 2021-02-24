@@ -13,10 +13,19 @@
     flex-wrap: wrap;
 
     .panelCompany {
+
+      text-align: center;
       width: 200px;
-      height: 200px;
-      background-color: #4d84e2;
+      height: 300px;
+      border: 2px solid black;
+      border-radius: 10px;
       margin: 10px;
+    }
+    .img{
+      width: auto;
+      height: auto;
+      max-width: 200px;
+      max-height: 200px;
     }
   }
 

@@ -5,3 +5,54 @@
 .withoutOffset{
     margin-left:calc(68px + 1rem);
 }
+.details-container{
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.details-container-buttons{
+    margin-right: 20px;
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:#42cc8c;
+    color: white;
+}
+.details-container-buttons-row-edit{
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:#5995fd;
+    color: white;
+    margin-right: 5px;
+}
+.details-container-buttons-row-delete{
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:red;
+    color: white;
+}
+
+.details-container-buttons-row{
+    align-items: center;
+    min-width: 150px;
+
+}
+.order-container-buttons{
+    float: right;
+    margin-right: 30px;
+    border-radius: 10px;
+    min-width: 150px;
+    background-color:#42cc8c;
+    color: white;
+}
+
+.input-searching-table{
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    backgroundColor: #f0f0f0;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+

@@ -13,6 +13,45 @@
 
 .buttonContainer{
     display: flex;
-    flex-direction: column;
-    width: 100px;
+    flex-direction: row;
+    width: 400px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 400px;
+}
+
+.buttonContainer-link{
+    border-radius: 10px;
+    background-color:#42cc8c;
+    color: white;
+    text-align: center;
+    width: 150px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+    max-height: 30px;
+}
+.buttonContainer-input{
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    backgroundColor: #f0f0f0;
+    border-radius: 5px;
+    padding-left: 5px;
+    min-height: 30px;
+    width: 200px;
+}
+
+.grid-rows-relations-button-cancel{
+    margin-top: 10px;
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:red;
+    color: white;
+    margin-left: 5px;
+}
+
+.TableRelations-grid{
+    max-width: 600px;
+    margin-left: 400px;
 }

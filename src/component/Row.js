@@ -16,6 +16,7 @@ import axios from "axios";
 import Moment from 'moment';
 import EditDetails from "./EditDetails";
 import ShowMoreText from 'react-show-more-text';
+import '../css/Tab.css'
 
 const useRowStyles = makeStyles({
     root: {
@@ -63,13 +64,13 @@ function Row(props) {
     const [vatPrcnt, setVatPrcnt] = useState()
     const [onTheWay, setOnTheWay] = useState()
     const [scheduledShipDate, setScheduledShipDate] = useState()
+    const [refresh, setRefresh] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleShow = () => {
         if (!open) {
             axios
                 .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
                 .then((response) => {
-                    console.log(response.data)
                     setDetails(response.data)
                 })
         }
@@ -94,6 +95,35 @@ function Row(props) {
         setScheduledShipDate(detail.scheduledShipDate);
         setIsModalOpen(true);
     }
+
+    const add = () => {
+        setId();
+        setItemCode();
+        setItemName();
+        setCodeBars();
+        setQuantity();
+        setPrice();
+        setCurrency();
+        setLineTotal();
+        setLineNet();
+        setLineVat();
+        setDiscountPrcnt();
+        setVatPrcnt();
+        setOnTheWay();
+        setScheduledShipDate();
+        setIsModalOpen(true);
+    }
+
+    React.useEffect(() => {
+        if (refresh === true) {
+            axios
+                .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
+                .then((response) => {
+                    setDetails(response.data)
+                })
+            setRefresh(false)
+        }
+    }, [refresh])
 
     const closeModel = () => {
         setIsModalOpen(false)
@@ -123,20 +153,22 @@ function Row(props) {
                         less='Zwiń'
                         className='content-css'
                         anchorClass='my-anchor-css-class'
-
                         width={280}>{row.description}</ShowMoreText></TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={9}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={0}>
+                            <div className="details-container">
                             <Typography variant="h6" gutterBottom component="div">
                                 Szczegóły
                             </Typography>
+                            <button className="details-container-buttons" onClick={() => add()}>Dodaj</button>
+                            </div>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="left">Pow</TableCell>
+                                        {/*<TableCell align="left">Pow</TableCell>*/}
                                         <TableCell align="left">Nr&nbsp;kat</TableCell>
                                         <TableCell align="left">Nazwa</TableCell>
                                         <TableCell align="left">EAN</TableCell>
@@ -151,13 +183,13 @@ function Row(props) {
                                         <TableCell align="left">Czas&nbsp;dostawy</TableCell>
                                         <TableCell align="left">Status</TableCell>
                                         <TableCell>Data modyfikacji</TableCell>
-                                        <TableCell>Akcja</TableCell>
+                                        <TableCell align="center">Akcja</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {details && details.map((historyRow) => (
                                         <TableRow key={historyRow.date}>
-                                            <TableCell align="center"> <input type="checkbox"/></TableCell>
+                                            {/*<TableCell align="center"> <input type="checkbox"/></TableCell>*/}
                                             <TableCell align="left">{historyRow.itemCode}</TableCell>
                                             <TableCell align="right">{historyRow.itemName}</TableCell>
                                             <TableCell align="right">{historyRow.codeBars}</TableCell>
@@ -176,7 +208,10 @@ function Row(props) {
                                                 {Moment(historyRow.modifyDate).format('DD-MM-YYYY hh:mm:ss')}
                                             </TableCell>
                                             <TableCell align="center">
-                                                <button onClick={() => edit(historyRow)}>Edit</button>
+                                                <div className="details-container-buttons-row">
+                                                <button className="details-container-buttons-row-edit" onClick={() => edit(historyRow)}>Edytuj</button>
+                                                <button className="details-container-buttons-row-delete" onClick={() => edit(historyRow)}>Usuń</button>
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -205,6 +240,8 @@ function Row(props) {
                 scheduledShipDate={scheduledShipDate}
                 isModalOpen={isModalOpen}
                 closeModel={closeModel}
+                // refreshDetails={refreshDetails}
+                refreshDetails={(refresh) => setRefresh(refresh)}
             />
         </React.Fragment>
     );

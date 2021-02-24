@@ -1,9 +1,9 @@
 
-.grid-container-details {
+.grid-container-order {
     display: grid;
     margin: 20px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
     gap: 0px 0px;
     grid-template-areas:
     ". ."
@@ -12,12 +12,12 @@
     ". .";
 }
 
-.grid-rows-details{
+.grid-rows-order{
     margin: 10px;
     font-weight: 500;
 }
 
-.grid-rows-details-input {
+.grid-rows-order-input {
     margin-top: 10px;
     border-radius: 55px;
     background-color: #f0f0f0;
@@ -30,11 +30,24 @@
     padding-left: 10px;
 }
 
-.grid-rows-details-input::placeholder {
+.grid-rows-order-input::placeholder {
     color: #aaa;
     font-weight: 500;
 }
-.grid-rows-details-button-add{
+.grid-rows-order-textArea-unical{
+    margin-top: 10px;
+    border-radius: 55px;
+    background-color: #f0f0f0;
+    outline: none;
+    border: none;
+    line-height: 3;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    padding-left: 10px;
+}
+
+.grid-rows-order-button-add{
     margin-top: 10px;
     border-radius: 10px;
     min-width: 70px;
@@ -45,7 +58,7 @@
     font-size: 1.1rem;
 }
 
-.grid-rows-details-button-cancel{
+.grid-rows-order-button-cancel{
     margin-top: 10px;
     border-radius: 10px;
     min-width: 70px;
