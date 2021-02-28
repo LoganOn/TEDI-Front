@@ -17,6 +17,7 @@ import Moment from 'moment';
 import EditDetails from "./EditDetails";
 import ShowMoreText from 'react-show-more-text';
 import '../css/Tab.css'
+import AddDetails from "./AddDetails";
 
 const useRowStyles = makeStyles({
     root: {
@@ -66,6 +67,7 @@ function Row(props) {
     const [scheduledShipDate, setScheduledShipDate] = useState()
     const [refresh, setRefresh] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen1, setIsModalOpen1] = useState(false);
     const handleShow = () => {
         if (!open) {
             axios
@@ -97,21 +99,9 @@ function Row(props) {
     }
 
     const add = () => {
-        setId();
-        setItemCode();
-        setItemName();
-        setCodeBars();
-        setQuantity();
-        setPrice();
-        setCurrency();
-        setLineTotal();
-        setLineNet();
-        setLineVat();
-        setDiscountPrcnt();
-        setVatPrcnt();
-        setOnTheWay();
-        setScheduledShipDate();
-        setIsModalOpen(true);
+
+        setIsModalOpen1(true);
+
     }
 
     React.useEffect(() => {
@@ -127,6 +117,10 @@ function Row(props) {
 
     const closeModel = () => {
         setIsModalOpen(false)
+    }
+
+    const closeModel1 = () => {
+        setIsModalOpen1(false)
     }
     return (
         <React.Fragment>
@@ -242,6 +236,11 @@ function Row(props) {
                 closeModel={closeModel}
                 // refreshDetails={refreshDetails}
                 refreshDetails={(refresh) => setRefresh(refresh)}
+            />
+            <AddDetails
+                id={row.deliveryOrderId}
+                isModalOpen={isModalOpen1}
+                closeModel={closeModel1}
             />
         </React.Fragment>
     );

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -10,9 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import axios from "axios";
 import {useSelector} from 'react-redux';
-import Row from './rowRelation'
+import Row from './rowItems'
 import '../css/Tab.css'
-import {Link} from "react-router-dom";
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -36,7 +34,7 @@ const StyledTableRow = withStyles((theme) => ({
 const classes = makeStyles();
 
 
-const Relation = (props) => {
+const Items = (props) => {
 
     const [relations, setRelations] = useState([]);
     const [isLoadnig, setIsLoadnig] = useState(false);
@@ -51,13 +49,18 @@ const Relation = (props) => {
     const width = useSelector((state => state))
 
 
-    const createData = (relationUsersId, creationDate, supplier, customer, active) => {
+    const createData = (itemId, itemCode, itemName, codeBars, price, currency, vatPrcnt, vatGroup, active, availability) => {
         return {
-            relationUsersId,
-            creationDate,
-            supplier,
-            customer,
-            active
+            itemId,
+            itemCode,
+            itemName,
+            codeBars,
+            price,
+            currency,
+            vatPrcnt,
+            vatGroup,
+            active,
+            availability
         };
     }
 
@@ -72,20 +75,19 @@ const Relation = (props) => {
 
     const uploadDate = (props) => {
         let tempArray = [];
-        if(props) {
-            props.forEach(data => {
-                let temp = createData(data.relationUsersId, data.creationDate, data.supplier.name, data.customer.name, data.active)
-                tempArray.push(temp)
-            })
-            setRelations(tempArray)
-        }
+        props.forEach(data => {
+            let temp = createData(data.itemId, data.itemCode, data.itemName, data.codeBars, data.price, data.currency, data.vatPrcnt, data.vatGroup, data.active, data.availability)
+            tempArray.push(temp)
+        })
+        setRelations(tempArray)
     }
 
     React.useEffect(() => {
         axios
-            .get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
+            .get(`http://localhost:8080/api/items`)
             .then((response) => {
                 uploadDate(response.data)
+                console.log(response)
             })
     }, [])
 
@@ -111,7 +113,7 @@ const Relation = (props) => {
         if (text == true) {
             setText(false)
             axios
-                .get(`http://localhost:8080/api/relations/${localStorage.getItem("role")}/${localStorage.getItem("userId")}`)
+                .get(`http://localhost:8080/api/items`)
                 .then((response) => {
                     uploadDate(response.data)
                 })
@@ -126,21 +128,25 @@ const Relation = (props) => {
     // };
     return (
         <div className={`${width ? 'offset' : 'withoutOffset'}`}>
-            <div className="buttonContainer">
-                <div className="buttonContainer-link">
-                    {/*<a to={"/addRelations"}>Dodaj firmę</a>*/}
-                    <a  className="buttonContainer-link" href={"/addRelations"}>Dodaj firmę</a>
-                </div>
-                <input className="buttonContainer-input" type='text' placeholder='Firma' name='company'
-                       onChange={(e) => setCompany(e.target.valu)}/>
-            </div>
-            <TableContainer component={Paper} className="TableRelations-grid">
-                <Table aria-label="collapsible table">
+            {/*<div className="buttonContainer">*/}
+            {/*    /!*<div className="buttonContainer-link">*!/*/}
+            {/*    /!*    <a to={"/addRelations"}>Dodaj firmę</a>*!/*/}
+            {/*    /!*    <a  className="buttonContainer-link" href={"/addRelations"}>Dodaj firmę</a>*!/*/}
+            {/*    /!*</div>*!/*/}
+            {/*    <input className="buttonContainer-input" type='text' placeholder='Firma' name='company'*/}
+            {/*           onChange={(e) => setCompany(e.target.valu)}/>*/}
+            {/*</div>*/}
+            <TableContainer component={Paper} >
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Data</StyledTableCell>
-                            <StyledTableCell align="center">Firma</StyledTableCell>
-                            <StyledTableCell align="center">Akcja</StyledTableCell>
+                            <StyledTableCell>Indeks</StyledTableCell>
+                            <StyledTableCell align="center">Nazwa</StyledTableCell>
+                            <StyledTableCell align="center">EAN</StyledTableCell>
+                            <StyledTableCell align="center">Cena</StyledTableCell>
+                            <StyledTableCell align="center">Waluta</StyledTableCell>
+                            <StyledTableCell align="center">Vat</StyledTableCell>
+                            <StyledTableCell align="center">Dostępność</StyledTableCell>
+                            <StyledTableCell align="center">Akcje</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -148,7 +154,6 @@ const Relation = (props) => {
                             <Row key={row.name} row={row} text={(textContent) => setText(textContent)}/>
                         ))}
                     </TableBody>
-                </Table>
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
@@ -158,7 +163,6 @@ const Relation = (props) => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                className="TableRelations-grid"
             />
 
         </div>
@@ -166,4 +170,4 @@ const Relation = (props) => {
 
 
 }
-export default Relation
+export default Items

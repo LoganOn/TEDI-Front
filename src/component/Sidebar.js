@@ -12,6 +12,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
 
@@ -101,9 +102,8 @@ function Sidebar() {
                         {/*<a>{email}</a>*/}
                         <DropdownButton className="dropdownButton" bsPrefix="dropdown-toggle btn btn-secondary"
                                         id="dropdown-header__img-button" title={email}>
-                            <Dropdown.Item className="dropdownButton" as="button">Action</Dropdown.Item>
-                            <Dropdown.Item className="dropdownButton" as="button">Another action</Dropdown.Item>
-                            <Dropdown.Item className="dropdownButton" as="button">Something else</Dropdown.Item>
+                            <Dropdown.Item className="dropdownButton"  href="/userPanel" >Panel użytkownika</Dropdown.Item>
+                            <Dropdown.Item className="dropdownButton" as="button" >Wyloguj</Dropdown.Item>
                         </DropdownButton>
                         {/*<img src={Avatar} alt=""/>*/}
                     </div>

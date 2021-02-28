@@ -22,6 +22,6 @@ export const SidebarData = [
     {
         title:"Towary",
         icon:<AiFillDatabase />,
-        link:"/analiytics",
+        link:"/items",
     }
 ];

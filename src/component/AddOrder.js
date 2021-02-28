@@ -14,6 +14,8 @@ const modalDefaultStyle = {
 const AddOrder = (props) => {
 
     const [id, setId] = useState(props.id)
+    const [deliverOrderID, setDeliverOrderID] = useState(10)
+    const [detailsDeliveryOrders, setDetailsDeliveryOrders] = useState([])
     const [itemName, setItemName] = useState(props.itemName)
     const [itemCode, setItemCode] = useState(props.itemCode)
     const [quantity, setQuantity] = useState(props.quantity)
@@ -28,47 +30,67 @@ const AddOrder = (props) => {
     const [onTheWay, setOnTheWay] = useState(props.onTheWay)
     const [refresh, setRefresh] = useState(props.refreshDetails)
     const [scheduledShipDate, setScheduledShipDate] = useState(props.scheduledShipDate)
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     React.useEffect(() => {
         if (props.itemName) {
-            setId(props.id)
-            setItemName(props.itemName);
-            setItemCode(props.itemCode);
-            setQuantity(props.quantity);
-            setCodeBars(props.codeBars);
-            setLineNet(props.lineNet);
-            setPrice(props.price);
-            setCurrency(props.currency);
-            setLineTotal(props.lineTotal);
-            setLineVat(props.lineVat);
-            setDiscountPrcnt(props.discountPrcnt);
-            setVatPrcnt(props.vatPrcnt);
-            setOnTheWay(props.onTheWay ? "W drodze" : "Nie wysłany");
-            setScheduledShipDate(props.scheduledShipDate);
-        }
+            // deliverOrderID,
+            // detailsDeliveryOrders:{
+                setId(props.id)
+                setItemName(props.itemName);
+                setItemCode(props.itemCode);
+                setQuantity(props.quantity);
+                setCodeBars(props.codeBars);
+                setLineNet(props.lineNet);
+                setPrice(props.price);
+                setCurrency(props.currency);
+                setLineTotal(props.lineTotal);
+                setLineVat(props.lineVat);
+                setDiscountPrcnt(props.discountPrcnt);
+                setVatPrcnt(props.vatPrcnt);
+                setOnTheWay(props.onTheWay ? "W drodze" : "Nie wysłany");
+                setScheduledShipDate(props.scheduledShipDate);
+            }
+        // }
     }, [props.itemName])
+
 
     const submit = () => {
         axios
-            .patch(`http://localhost:8080/api/details/${id}`,
+            .post(`http://localhost:8080/api/delivery`,
                 {
-                    itemName,
-                    codeBars,
-                    lineNet:Number (lineNet),
-                    itemCode,
-                    quantity:Number(quantity),
-                    price:Number(price),
-                    currency,
-                    lineTotal:Number(lineTotal),
-                    lineVat:Number(lineVat),
-                    discountPrcnt,
-                    vatPrcnt:Number(vatPrcnt),
-                    // onTheWay,
-                    scheduledShipDate,
+                // {      baseRef,
+                //     numberOrderCustomer,
+                //     docStatus,
+                //
+                //     supplier : { 'userId' : userid},
+                //     lineTotal:Number(lineTotal),
+                //     lineVat:Number(lineVat),
+                //     discountPrcnt,
+                //     vatPrcnt:Number(vatPrcnt),
+                //     // onTheWay,
+                //     scheduledShipDate,
+                    "baseRef": "ZAM-2020-20022",
+                    "numberOrderCustomer": "202012101234",
+                    "docStatus": "C",
+                    "supplier": {
+                        "userId": 2
+                    },
+                    "customer": {
+                        "userId": 1
+                    },
+                    "docTotal": 6000.0,
+                    "docNet": 4878.05,
+                    "docVatSum": 1121.95,
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet dui justo. Nullam et elit velit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur ac imperdiet odio. Praesent sed fringilla lorem. Nulla facilisi. Cras eget eleifend mauris, eget euismod massa. Vivamus ultricies eu elit a fringilla. In mattis, ipsum et accumsan egestas, sem erat lobortis justo, et ullamcorper eros tortor eget ipsum.",
+                    "detailsDeliveryOrdersList": [
+                    ]
+
                 })
             .then((response) => {
-                props.closeModel()
-                props.refreshDetails(true)
+              // closeModel()
+                 props.closeModel()
+                 props.refreshDetails(true)
             })
     }
     return (

@@ -68,12 +68,12 @@ class Tab extends Component{
         };
     }
 
-     handleChangePage = (event, newPage) => {
+    handleChangePage = (event, newPage) => {
         this.setState({page: newPage});
     };
 
-     handleChangeRowsPerPage = (event) => {
-         this.setState({rowsPerPage : parseInt(event.target.value, 10), page: 0});
+    handleChangeRowsPerPage = (event) => {
+        this.setState({rowsPerPage : parseInt(event.target.value, 10), page: 0});
     };
 
     async componentDidMount(){
@@ -102,7 +102,7 @@ class Tab extends Component{
                     }
                     else
                         this.setState({count: response.data.count})
-                        this.uploadDate(response.data.deliveryOrders)
+                    this.uploadDate(response.data.deliveryOrders)
                 })
         }
     }
@@ -112,6 +112,10 @@ class Tab extends Component{
         state[fieldName] = value;
         this.setState(state);
     };
+
+     closeModel = () => {
+        this.setState({isModalOpen: false})
+    }
 
     render() {
         return (
@@ -151,27 +155,11 @@ class Tab extends Component{
                     page={this.state.page}
                     onPageChange={this.handleChangePage}
                     onRowsPerPageChange={this.handleChangeRowsPerPage}
-                    />
+                />
                 <AddOrder
-                    // itemName={}
-                    // codeBars={}
-                    // lineNet={}
-                    // id={}
-                    // itemCode={}
-                    // quantity={}
-                    // codeBars={}
-                    // lineNet={}
-                    // price={}
-                    // currency={}
-                    // lineTotal={}
-                    // lineVat={}
-                    // discountPrcnt={}
-                    // vatPrcnt={}
-                    // onTheWay={}
-                    // scheduledShipDate={}
                     isModalOpen={this.state.isModalOpen}
-                    closeModel={this.state.closeModel}
-                    // refreshDetails={refreshDetails}
+                    closeModel={this.closeModel}
+                    //refreshDetails={refreshDetails}
                     // refreshDetails={(refresh) => setRefresh(refresh)}
                 />
             </div>

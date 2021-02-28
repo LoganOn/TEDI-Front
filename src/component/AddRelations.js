@@ -40,30 +40,30 @@ const AddRelations = (props) => {
 
     return (
         <div className="containerRelations">
-            <div className="rowRelations" >
-                <div className="panelCompany">
-                    <img className="panelCompany-img" src={Femax}/>
-                    <h2>Femax</h2>
-                </div>
-                <div className="panelCompany" >
-                    <img className="panelCompany-img" src={Tece}/>
-                    <h2>Tece</h2>
-                </div>
-                <div className="panelCompany">
-                    <img className="panelCompany-img" src={Purmo}/>
-                    <h2>Purmo</h2>
-                </div>
-                <div className="panelCompany" >
-                    <img className="panelCompany-img" src={Grohe}/>
-                    <h2>Grohe</h2>
-                </div>
-                {/*{relations && relations.map((company) => (*/}
-                {/*    <div className="panelCompany" onClick={() => addRelation(company.userId)}>*/}
-                {/*        <img className="panelCompany-img" src={Femax}/>*/}
-                {/*        <h2>{company.name}</h2>*/}
-                {/*    </div>*/}
+             <div className="rowRelations" >
+                 {/*<div className="panelCompany">*/}
+                 {/*    <img className="panelCompany-img" src={Femax}/>*/}
+                 {/*    <h2>Femax</h2>*/}
+                 {/*</div>*/}
+                 {/*<div className="panelCompany" >*/}
+                 {/*    <img className="panelCompany-img" src={Tece}/>*/}
+                 {/*    <h2>Tece</h2>*/}
+                 {/*</div>*/}
+                 {/*<div className="panelCompany">*/}
+                 {/*    <img className="panelCompany-img" src={Purmo}/>*/}
+                 {/*    <h2>Purmo</h2>*/}
+                 {/*</div>*/}
+                 {/*<div className="panelCompany" >*/}
+                 {/*    <img className="panelCompany-img" src={Grohe}/>*/}
+                 {/*    <h2>Grohe</h2>*/}
+                 {/*</div>*/}
+                {relations && relations.map((company) => (
+                    <div className="panelCompany" onClick={() => addRelation(company.userId)}>
+                        <img className="panelCompany-img" src={Femax}/>
+                        <h2>{company.name}</h2>
+                    </div>
 
-                {/*))}*/}
+                ))}
             </div>
         </div>
     );

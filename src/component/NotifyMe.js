@@ -39,15 +39,42 @@ const NotifyMe = props => {
     const multiLineSplitter = props.multiLineSplitter || '\n';
     const showDate = props.showDate || false;
 
+
+    const sortByDate = (orders) => {
+        orders.sort(function (a, b) {
+            if (a.orderTime && !b.orderTime) return -1;
+            else if (!a.orderTime && b.orderTime) return 1;
+            else if (a.orderTime && b.orderTime) {
+                if (a.orderTime < b.orderTime) return 1;
+                else return -1;
+            }
+            return 0;
+        });
+        return orders;
+    };
+
+
     useEffect(() => {
+        console.log(key)
         if (!sortedByKey) {
-            data.sort((a, b) => b[key] - a[key]);
+            // console.log(  data.sort((a, b) => a[key] - b[key] ))
+            // data.sort((a, b) => a[key] - b[key]);
+            // sortByDate(data.creationDate)
+            data.sort(function (a, b) {
+                if (a.creationDate && !b.creationDate) return -1;
+                else if (!a.creationDate && b.creationDate) return 1;
+                else if (a.creationDate && b.creationDate) {
+                    if (a.creationDate < b.creationDate) return 1;
+                    else return -1;
+                }
+                return 0;
+            });
         }
 
         // We read if any last read item id is in the local storage
         let readItemLs = reactLocalStorage.getObject(storageKey);
         let readMsgId = Object.keys(readItemLs).length > 0 ? readItemLs['id'] : '';
-
+            console.log(readMsgId)
         // if the id found, we check what is the index of that message in the array and query it. If not found,
         // nothing has been read. Hence count should be same as all the message count.
         let readIndex = (readMsgId === '') ? data.length : data.findIndex(elem => elem[key] === readMsgId);
