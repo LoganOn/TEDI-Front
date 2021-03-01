@@ -18,6 +18,7 @@ import EditDetails from "./EditDetails";
 import ShowMoreText from 'react-show-more-text';
 import '../css/Tab.css'
 import AddDetails from "./AddDetails";
+import Confirmation from "./Confirmation";
 
 const useRowStyles = makeStyles({
     root: {
@@ -68,6 +69,7 @@ function Row(props) {
     const [refresh, setRefresh] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpen1, setIsModalOpen1] = useState(false);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
     const handleShow = () => {
         if (!open) {
             axios
@@ -105,11 +107,13 @@ function Row(props) {
     }
 
     React.useEffect(() => {
+        console.log("HAHA")
         if (refresh === true) {
             axios
                 .get(`http://localhost:8080/api/details/${row.deliveryOrderId}`)
                 .then((response) => {
                     setDetails(response.data)
+                    console.log(response.data)
                 })
             setRefresh(false)
         }
@@ -121,6 +125,25 @@ function Row(props) {
 
     const closeModel1 = () => {
         setIsModalOpen1(false)
+    }
+    const closeModel2 = () => {
+        setIsModalOpen2(false)
+    }
+    const openModal2 = (e) => {
+        setId(e)
+        setIsModalOpen2(true)
+    }
+    const deleteRelation = () => {
+        console.log(details)
+        axios
+            .delete(`http://localhost:8080/api/details/${id}`)
+            .then((response) => {
+                // setDetails(response.data)
+                // props.text(!text
+                setRefresh(true)
+            })
+
+        closeModel2()
     }
     return (
         <React.Fragment>
@@ -204,7 +227,7 @@ function Row(props) {
                                             <TableCell align="center">
                                                 <div className="details-container-buttons-row">
                                                 <button className="details-container-buttons-row-edit" onClick={() => edit(historyRow)}>Edytuj</button>
-                                                <button className="details-container-buttons-row-delete" onClick={() => edit(historyRow)}>Usuń</button>
+                                                <button className="details-container-buttons-row-delete" onClick={() => openModal2(historyRow.id)}>Usuń</button>
                                                 </div>
                                             </TableCell>
                                         </TableRow>
@@ -242,7 +265,11 @@ function Row(props) {
                 isModalOpen={isModalOpen1}
                 closeModel={closeModel1}
             />
-
+            <Confirmation
+                isModalOpen={isModalOpen2}
+                deleteRelation={deleteRelation}
+                closeModel={closeModel2}
+            />
         </React.Fragment>
     );
 }
