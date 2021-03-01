@@ -56,20 +56,20 @@ const NotifyMe = props => {
 
     useEffect(() => {
         console.log(key)
-        if (!sortedByKey) {
-            // console.log(  data.sort((a, b) => a[key] - b[key] ))
-            // data.sort((a, b) => a[key] - b[key]);
-            // sortByDate(data.creationDate)
-            data.sort(function (a, b) {
-                if (a.creationDate && !b.creationDate) return -1;
-                else if (!a.creationDate && b.creationDate) return 1;
-                else if (a.creationDate && b.creationDate) {
-                    if (a.creationDate < b.creationDate) return 1;
-                    else return -1;
-                }
-                return 0;
-            });
-        }
+        // if (!sortedByKey) {
+        //     // console.log(  data.sort((a, b) => a[key] - b[key] ))
+        //     // data.sort((a, b) => a[key] - b[key]);
+        //     // sortByDate(data.creationDate)
+        //     data.sort(function (a, b) {
+        //         if (a.creationDate && !b.creationDate) return -1;
+        //         else if (!a.creationDate && b.creationDate) return 1;
+        //         else if (a.creationDate && b.creationDate) {
+        //             if (a.creationDate < b.creationDate) return 1;
+        //             else return -1;
+        //         }
+        //         return 0;
+        //     });
+        // }
 
         // We read if any last read item id is in the local storage
         let readItemLs = reactLocalStorage.getObject(storageKey);

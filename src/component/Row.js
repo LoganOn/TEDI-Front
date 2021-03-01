@@ -242,6 +242,7 @@ function Row(props) {
                 isModalOpen={isModalOpen1}
                 closeModel={closeModel1}
             />
+
         </React.Fragment>
     );
 }

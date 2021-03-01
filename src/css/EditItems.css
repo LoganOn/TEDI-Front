@@ -1,0 +1,57 @@
+
+.grid-container-items {
+    display: grid;
+    margin: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    ". ."
+    ". ."
+    ". ."
+    ". .";
+}
+
+.grid-rows-items{
+    margin: 10px;
+    font-weight: 500;
+}
+
+.grid-rows-items-input {
+    margin-top: 10px;
+    border-radius: 55px;
+    background-color: #f0f0f0;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    padding-left: 10px;
+}
+
+.grid-rows-item-input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
+.grid-rows-items-button-add{
+    margin-top: 10px;
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:#5995fd;
+    color: white;
+    margin-right: 5px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.grid-rows-items-button-cancel{
+    margin-top: 10px;
+    border-radius: 10px;
+    min-width: 70px;
+    background-color:red;
+    color: white;
+    margin-left: 5px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}

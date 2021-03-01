@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Collapse from "@material-ui/core/Collapse";
@@ -6,8 +6,8 @@ import {makeStyles, withStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
 import '../css/Relation.css'
-import Moment from "moment";
 import Confirmation from "./Confirmation";
+import EditItems from "./EditItems";
 
 
 const useRowStyles = makeStyles({
@@ -45,14 +45,38 @@ function RowItems(props) {
     const [details, setDetails] = React.useState([]);
     const [text, setText] = React.useState(props.text);
     const [isModalOpen, setIsModalOpen] = React.useState(false);
+    const [isModalOpen1, setIsModalOpen1] = React.useState(false);
+    const [itemName, setItemName] = useState()
+    const [itemCode, setItemCode] = useState()
+    const [codeBars, setCodeBars] = useState()
+    const [price, setPrice] = useState(0)
+    const [currency, setCurrency] = useState()
+    const [vatPrcnt, setVatPrcnt] = useState()
+    const [availability, setAvailability] = useState()
+
     const classes = useRowStyles();
 
     const closeModel = () => {
         setIsModalOpen(false)
     }
 
+    const closeModel1 = () => {
+        setIsModalOpen1(false)
+    }
+
     const openModal = () => {
         setIsModalOpen(true)
+    }
+
+    const edit = (row) => {
+        setItemCode(row.itemCode);
+        setItemName(row.itemName);
+        setCodeBars(row.codeBars);
+        setPrice(row.price);
+        setCurrency(row.currency);
+        setVatPrcnt(row.vatPrcnt);
+        setAvailability(row.availability);
+        setIsModalOpen1(true);
     }
 
     const deleteRelation = () => {
@@ -63,6 +87,7 @@ function RowItems(props) {
                 props.text(!text)
             })
     }
+
     React.useEffect(() => {
     }, [isModalOpen])
     return (
@@ -80,7 +105,7 @@ function RowItems(props) {
                 <TableCell align="center">{row.availability}</TableCell>
                 {/*<TableCell align="center">{row.active}</TableCell>*/}
                 <TableCell align="center">
-                    <button className="details-container-buttons-row-edit"  onClick={openModal}>Edytuj</button>
+                    <button className="details-container-buttons-row-edit"  onClick={() => edit(row)}>Edytuj</button>
                     <button className="details-container-buttons-row-delete" onClick={openModal}>Usuń</button>
                     {/*<Switch onClick={toggler}></Switch>*/}
                 </TableCell>
@@ -97,6 +122,20 @@ function RowItems(props) {
                 closeModel={closeModel}
             >
             </Confirmation>
+            <EditItems
+                id={row.itemId}
+                itemCode={itemCode}
+                itemName={itemName}
+                codeBars={codeBars}
+                price={price}
+                currency={currency}
+                vatPrcnt={vatPrcnt}
+                availability={availability}
+                // refreshDetails={refreshDetails}
+                // refreshDetails={(refresh) => setRefresh(refresh)}
+                isModalOpen={isModalOpen1}
+                closeModel={closeModel1}
+                />
         </React.Fragment>
     );
 }
